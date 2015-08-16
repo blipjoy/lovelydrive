@@ -1,0 +1,35 @@
+<canvas></canvas>
+
+<!-- build:remove -->
+
+<!-- Vertex shader: src/glsl/vertex.glsl -->
+<script type="x-shader/x-vertex">
+    attribute vec4 v; // Vertex position
+
+    uniform mat4 p; // Projection matrix
+    uniform mat4 m; // View matrix
+
+    void main(void) {
+        gl_Position = v * m * p;
+    }
+</script>
+
+<!-- Fragment shader: src/glsl/fragment.glsl -->
+<script type="x-shader/x-fragment">
+    precision highp float;
+
+    uniform vec4 c; // Color
+
+    void main(void) {
+        gl_FragColor = c;
+    }
+</script>
+<!-- /build -->
+
+<!-- build:css inline build/index.min.css -->
+<link rel=stylesheet type=text/css href=style/index.css>
+<!-- /build -->
+
+<!-- build:js inline build/app.min.js -->
+<script src=src/app.js></script>
+<!-- /build -->
