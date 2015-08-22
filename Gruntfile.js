@@ -210,6 +210,12 @@ module.exports = function(grunt) {
           },
           usePrefix: false,
           force: true,
+          patterns: [
+            {
+              match: /\n\/\/ XXX: <[\s\S]*?\/\/ XXX: <\/.*\n/g,
+              replacement: ""
+            }
+          ],
         },
         files: [
           {
@@ -302,7 +308,6 @@ module.exports = function(grunt) {
         options: {
           archive: "build/index.zip",
           level: 9,
-          pretty: true,
         },
         files: [
           {

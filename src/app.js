@@ -25,12 +25,31 @@ gl.shaderSource(tmp, document.body.children[1].innerText)
 gl.compileShader(tmp)
 gl.attachShader(handle, tmp)
 
+// XXX: <DEBUG>
+if (!gl.getShaderParameter(tmp, gl.COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(tmp)
+}
+// XXX: </DEBUG>
+
 tmp = gl.createShader(gl.FRAGMENT_SHADER)
 gl.shaderSource(tmp, document.body.children[2].innerText)
 gl.compileShader(tmp)
 gl.attachShader(handle, tmp)
 
+// XXX: <DEBUG>
+if (!gl.getShaderParameter(tmp, gl.COMPILE_STATUS)) {
+    throw gl.getShaderInfoLog(tmp)
+}
+// XXX: </DEBUG>
+
 gl.linkProgram(handle)
+
+// XXX: <DEBUG>
+if (!gl.getProgramParameter(handle, gl.LINK_STATUS)) {
+    throw gl.getProgramInfoLog(handle)
+}
+// XXX: </DEBUG>
+
 gl.useProgram(handle)
 
 // Initialize background color (default is white)
@@ -53,13 +72,20 @@ gl.vertexAttribPointer(
 // Initialize uniform variables
 t = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
 v = new Float32Array(16) // This is my view matrix
+/*
+gl.uniformMatrix4fv(
+    t = gl.getUniformLocation(handle, "m"), // This is my view matrix pointer
+    0,
+    v = new Float32Array("1000010000100001".split("")) // This is my view matrix
+)
+*/
 gl.uniformMatrix4fv(
     gl.getUniformLocation(handle, "p"),
     gl.uniform4fv(
         gl.getUniformLocation(handle, "c"),
         u = new Float32Array([ 0, 0, 1, 1 ]) // `u` is assigned here; This is my color buffer
     ),
-    // Perspective transformation matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
+    // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
     // FOV = 45° == (Math.PI / 4) RAD
     // near = 10
     // far = 50
