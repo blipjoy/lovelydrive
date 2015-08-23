@@ -16,6 +16,7 @@ ctx.canvas.width = ctx.canvas.height = m
 var img = ctx.createImageData(m, m)
 
 // XXX: <DEBUG>
+document.body.firstChild.style.display = "none"
 document.body.appendChild(ctx.canvas)
 // XXX: </DEBUG>
 
@@ -90,7 +91,7 @@ for (var y = 0; y <= n; y++) {
     ctx.fill()
 }
 
-
+/*
 // Render loop
 function raf() {
     // Animation state
@@ -110,3 +111,4 @@ function raf() {
     requestAnimationFrame(raf)
 }
 raf()
+*/
