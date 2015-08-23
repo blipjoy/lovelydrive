@@ -26,8 +26,7 @@ function diamond(x, y, w, s, f) {
 
 function subsquare(x, y, w, s, f) {
     d[x][y] =
-    // FIXME: This assignment makes the factral wrap properly. How can I make this smaller?
-    d[x == n ? 0 : x][y == n ? 0 : y] =
+    d[x % n][y % n] =
     f((
         d[(x - w + n) % n][y] +
         d[x][(y - w + n) % n] +
