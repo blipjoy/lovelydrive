@@ -7,20 +7,16 @@ module.exports = function(grunt) {
       pack: "build/app.pack.js",
     },
 
-/*
     concat: {
       dist: {
         src: [
-          "lib/melonJS-<%= pkgl.version %>.js",
-          "lib/plugins/*.js",
-          "js/game.js",
-          "build/js/resources.js",
-          "js/** /*.js",
+          "src/webgl.js",
+          "src/fractal.js",
+          "src/main.js",
         ],
-        dest: "build/js/app.js"
+        dest: "<%= path.main %>"
       }
     },
-*/
 
     replace: {
       glsl: {
@@ -221,7 +217,7 @@ module.exports = function(grunt) {
           {
             expand: true,
             flatten: true,
-            src: [ "src/app.js" ],
+            src: [ "<%= path.main %>" ],
             dest: "build/"
           }
         ]
@@ -341,7 +337,7 @@ module.exports = function(grunt) {
 */
   });
 
-  //grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks("grunt-contrib-concat");
   grunt.loadNpmTasks("grunt-contrib-compress");
   grunt.loadNpmTasks("grunt-contrib-connect");
   grunt.loadNpmTasks("grunt-contrib-cssmin");
@@ -353,6 +349,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-replace");
 
   grunt.registerTask("default", [
+    "concat",
     "replace:glsl",
     "replace:dist",
     "uglify",
