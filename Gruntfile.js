@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         src: [
           "src/webgl.js",
           "src/fractal.js",
+          "src/textures.js",
           "src/main.js",
         ],
         dest: "<%= path.main %>"
