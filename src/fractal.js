@@ -10,18 +10,6 @@ for (i = 0; i <= n; i++) {
 q = []
 
 
-// Deterministic random function
-rs = Math.PI
-function random() {
-    rs += Math.E + Math.cos(rs)
-    return rs % 1
-}
-
-// Sinusoidal tween
-function easeInOut(value) {
-    return .5 * (1 - Math.cos(Math.PI * value))
-}
-
 // Height map function
 function height(value, weight) {
     return Math.max(Math.min(value + (Math.random() - .5) * weight, 1), 0)
