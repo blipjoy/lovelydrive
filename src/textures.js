@@ -33,20 +33,20 @@ tmp = 0
 for (var y = 0; y < textureSize; y++) {
     for (var x = 0; x < textureSize; x++) {
         // Interpolate between each node
-        var sx = x / textureSize * fractalSize
-        var sy = y / textureSize * fractalSize
+        var sx = x / textureSize * fractalSize,
+            sy = y / textureSize * fractalSize,
 
-        var p1 = fractalData[~~sx][~~sy]
-        var p2 = fractalData[~~sx + 1][~~sy]
-        var p3 = fractalData[~~sx][~~sy + 1]
-        var p4 = fractalData[~~sx + 1][~~sy + 1]
+            p1 = fractalData[~~sx][~~sy],
+            p2 = fractalData[~~sx + 1][~~sy],
+            p3 = fractalData[~~sx][~~sy + 1],
+            p4 = fractalData[~~sx + 1][~~sy + 1],
 
-        var h = (
-            (p1 + (p2 - p1) * (sx % 1)) * (1 - sy % 1) +
-            (p1 + (p3 - p1) * (sy % 1)) * (1 - sx % 1) +
-            (p3 + (p4 - p3) * (sx % 1)) * (sy % 1) +
-            (p2 + (p4 - p2) * (sy % 1)) * (sx % 1)
-        ) / 2
+            h = (
+                (p1 + (p2 - p1) * (sx % 1)) * (1 - sy % 1) +
+                (p1 + (p3 - p1) * (sy % 1)) * (1 - sx % 1) +
+                (p3 + (p4 - p3) * (sx % 1)) * (sy % 1) +
+                (p2 + (p4 - p2) * (sy % 1)) * (sx % 1)
+            ) / 2
 
         // Choose a color based on node height
         img.data[tmp++] = 102 + h * 118 // 102 -> 220
