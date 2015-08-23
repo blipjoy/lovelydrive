@@ -1,13 +1,13 @@
 // Fractal state
-n = 128 // Fractal size (n^2 + 1)
+var fractalSize = 128 // Real fractal size is n^2+1 to handle wrapping
 
-d = [] // Fractal array
-for (i = 0; i <= n; i++) {
-    d[i] = []
+var fractalData = []
+for (i = 0; i <= fractalSize; i++) {
+    fractalData[i] = []
 }
 
 // Diamond-square worker queue
-q = []
+var fractalQueue = []
 
 
 // Height map function
@@ -16,22 +16,22 @@ function height(value, weight) {
 }
 
 function diamond(x, y, w, s, f) {
-    d[x + w / 2][y + w / 2] = f((
-        d[x][y] +
-        d[x + w][y] +
-        d[x][y + w] +
-        d[x + w][y + w]
+    fractalData[x + w / 2][y + w / 2] = f((
+        fractalData[x][y] +
+        fractalData[x + w][y] +
+        fractalData[x][y + w] +
+        fractalData[x + w][y + w]
     ) / 4, s)
 }
 
 function subsquare(x, y, w, s, f) {
-    d[x][y] =
-    d[x % n][y % n] =
+    fractalData[x][y] =
+    fractalData[x % fractalSize][y % fractalSize] =
     f((
-        d[(x - w + n) % n][y] +
-        d[x][(y - w + n) % n] +
-        d[(x + w) % n][y] +
-        d[x][(y + w) % n]
+        fractalData[(x - w + fractalSize) % fractalSize][y] +
+        fractalData[x][(y - w + fractalSize) % fractalSize] +
+        fractalData[(x + w) % fractalSize][y] +
+        fractalData[x][(y + w) % fractalSize]
     ) / 4, s)
 }
 
@@ -54,9 +54,9 @@ function square(x, y, w, s, f) {
         diamond(x + w, y + w, w, s, f)
 
         // Push square steps onto a worker queue
-        q.push([ x, y, w, s, f ])
-        q.push([ x + w, y, w, s, f ])
-        q.push([ x, y + w, w, s, f ])
-        q.push([ x + w, y + w, w, s, f ])
+        fractalQueue.push([ x, y, w, s, f ])
+        fractalQueue.push([ x + w, y, w, s, f ])
+        fractalQueue.push([ x, y + w, w, s, f ])
+        fractalQueue.push([ x + w, y + w, w, s, f ])
     }
 }
