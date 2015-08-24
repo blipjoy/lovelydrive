@@ -21,7 +21,7 @@ gl.viewport(0, 0, document.body.clientWidth, document.body.clientHeight)
 var handle = gl.createProgram()
 
 tmp = gl.createShader(gl.VERTEX_SHADER)
-gl.shaderSource(tmp, document.body.children[1].innerText)
+gl.shaderSource(tmp, document.body.children[1].innerHTML)
 gl.compileShader(tmp)
 gl.attachShader(handle, tmp)
 
@@ -32,7 +32,7 @@ if (!gl.getShaderParameter(tmp, gl.COMPILE_STATUS)) {
 // XXX: </DEBUG>
 
 tmp = gl.createShader(gl.FRAGMENT_SHADER)
-gl.shaderSource(tmp, document.body.children[2].innerText)
+gl.shaderSource(tmp, document.body.children[2].innerHTML)
 gl.compileShader(tmp)
 gl.attachShader(handle, tmp)
 

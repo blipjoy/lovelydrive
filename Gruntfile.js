@@ -59,8 +59,8 @@ module.exports = function(grunt) {
       dist: {
         options: {
           variables: {
-            "document.body.children[1].innerText": "\"<%= grunt.file.read('build/glsl/vertex.glsl') %>\"",
-            "document.body.children[2].innerText": "\"<%= grunt.file.read('build/glsl/fragment.glsl') %>\"",
+            "document.body.children[1].innerHTML": "\"<%= grunt.file.read('build/glsl/vertex.glsl') %>\"",
+            "document.body.children[2].innerHTML": "\"<%= grunt.file.read('build/glsl/fragment.glsl') %>\"",
             "gl.TRIANGLES": 4,
             "gl.FLOAT": 5126,
             "gl.COLOR_BUFFER_BIT": 16384,
