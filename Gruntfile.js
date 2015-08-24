@@ -62,6 +62,7 @@ module.exports = function(grunt) {
           variables: {
             "document.body.children[1].innerHTML": "\"<%= grunt.file.read('build/glsl/vertex.glsl') %>\"",
             "document.body.children[2].innerHTML": "\"<%= grunt.file.read('build/glsl/fragment.glsl') %>\"",
+            "gl.ONE": 1,
             "gl.TRIANGLES": 4,
             "gl.SRC_ALPHA": 770,
             "gl.ONE_MINUS_SRC_ALPHA": 771,
