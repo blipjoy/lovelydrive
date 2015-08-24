@@ -1,7 +1,7 @@
 // Initialize WebGL
 document.body.firstChild.width = document.body.clientWidth
 document.body.firstChild.height = document.body.clientHeight
-var gl = document.body.firstChild.getContext("webgl")
+var gl = document.body.firstChild.getContext("webgl", { alpha: 0 })
 
 // Hash all WebGL methods
 // See Gruntfile.js for hash replacements
@@ -56,8 +56,8 @@ gl.useProgram(handle)
 // Initialize background color (default is white)
 gl.clearColor(102 / 255, 145 / 255, 220 / 255, 1)
 
-// Enable blending ... sorta (TODO: Fix the white edges around the mountains)
-gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+// Enable blending
+gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
 gl.enable(gl.BLEND);
 gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
 
