@@ -64,16 +64,16 @@ gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
 
 // Initialize attribute variables
 gl.vertexAttribPointer(
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()), // gl.getAttribLocation(handle, "u")
+    gl.getAttribLocation(handle, "u"),
     2, // Number of floats
     gl.FLOAT,
     gl.enableVertexAttribArray(gl.vertexAttribPointer(
-        1, // gl.getAttribLocation(handle, "v")
+        gl.getAttribLocation(handle, "v"),
         4, // Number of floats
         gl.FLOAT,
         gl.enableVertexAttribArray(1),
         24, // Stride: (4 + 2) * 4
-        0   // Offset: 0 * 4
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
     )),
     24, // Stride: (4 + 2) * 4
     16  // Offset: 4 * 4
