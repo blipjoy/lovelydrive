@@ -52,38 +52,43 @@ if (!gl.getProgramParameter(handle, gl.LINK_STATUS)) {
 
 gl.useProgram(handle)
 
+
 // Initialize background color (default is white)
-//gl.clearColor(0, 0, 0, 1)
+gl.clearColor(102 / 255, 145 / 255, 220 / 255, 1)
+
+// Enable blending ... sorta (TODO: Fix the white edges around the mountains)
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+gl.enable(gl.BLEND);
+gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+
 
 // Initialize attribute variables
 gl.vertexAttribPointer(
-    0,
-    4,
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()), // gl.getAttribLocation(handle, "u")
+    2, // Number of floats
     gl.FLOAT,
-    gl.enableVertexAttribArray(0),
-    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()),
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([ // This is my triangle buffer
-        0, 10, -2, 1,
-        10 * Math.sin(Math.PI / 3), -10 * Math.cos(Math.PI / 3), -2, 1,
-        -10 * Math.sin(Math.PI / 3), -10 * Math.cos(Math.PI / 3), -2, 1
-    ]), gl.DYNAMIC_DRAW)
+    gl.enableVertexAttribArray(gl.vertexAttribPointer(
+        1, // gl.getAttribLocation(handle, "v")
+        4, // Number of floats
+        gl.FLOAT,
+        gl.enableVertexAttribArray(1),
+        24, // Stride: (4 + 2) * 4
+        0   // Offset: 0 * 4
+    )),
+    24, // Stride: (4 + 2) * 4
+    16  // Offset: 4 * 4
 )
 
+
 // Initialize uniform variables
-t = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
+m = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
 v = new Float32Array(16) // This is my view matrix
-/*
-gl.uniformMatrix4fv(
-    t = gl.getUniformLocation(handle, "m"), // This is my view matrix pointer
-    0,
-    v = new Float32Array("1000010000100001".split("")) // This is my view matrix
-)
-*/
+
 gl.uniformMatrix4fv(
     gl.getUniformLocation(handle, "p"),
     gl.uniform4fv(
-        gl.getUniformLocation(handle, "c"),
-        u = new Float32Array([ 0, 0, 1, 1 ]) // `u` is assigned here; This is my color buffer
+        c = gl.getUniformLocation(handle, "c"),
+        u = new Float32Array([ 1, 1, 1, 1 ]) // `u` is assigned here; This is my color buffer
     ),
     // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
     // FOV = 45° == (Math.PI / 4) RAD
@@ -96,3 +101,11 @@ gl.uniformMatrix4fv(
         0, 0, 10 * 50 * (1.0 / (10 - 50)) * 2, 0
     ])
 )
+
+/*
+// Set texture sampler
+gl.uniform1i(
+    s = gl.getUniformLocation(handle, "s"),
+    0 // default is 0... I'll just save this here for later...
+)
+*/

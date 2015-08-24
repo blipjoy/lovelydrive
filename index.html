@@ -1,15 +1,21 @@
 <canvas></canvas>
 
 <!-- build:remove -->
-
 <!-- Vertex shader: src/glsl/vertex.glsl -->
 <script type="x-shader/x-vertex">
     attribute vec4 v; // Vertex position
+    attribute vec2 u; // Texture coordinates
 
     uniform mat4 p; // Projection matrix
     uniform mat4 m; // View matrix
 
+    varying vec2 t; // Texture coordinates
+
     void main(void) {
+        // Pass varyings along to fragment shader
+        t = u;
+
+        // Transform the vertex position by the projection and view matrices
         gl_Position = v * m * p;
     }
 </script>
@@ -19,9 +25,13 @@
     precision highp float;
 
     uniform vec4 c; // Color
+    uniform sampler2D s; // Texture
+
+    varying vec2 t; // Texture coordinates
 
     void main(void) {
-        gl_FragColor = c;
+        // Set the fragment color by sampling the texture and multiply color
+        gl_FragColor = texture2D(s, t) * c;
     }
 </script>
 <!-- /build -->
@@ -34,5 +44,6 @@
 <script src=src/webgl.js></script>
 <script src=src/fractal.js></script>
 <script src=src/textures.js></script>
+<script src=src/scene.js></script>
 <script src=src/main.js></script>
 <!-- /build -->

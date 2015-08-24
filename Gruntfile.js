@@ -13,6 +13,7 @@ module.exports = function(grunt) {
           "src/webgl.js",
           "src/fractal.js",
           "src/textures.js",
+          "src/scene.js",
           "src/main.js",
         ],
         dest: "<%= path.main %>"
@@ -62,12 +63,22 @@ module.exports = function(grunt) {
             "document.body.children[1].innerHTML": "\"<%= grunt.file.read('build/glsl/vertex.glsl') %>\"",
             "document.body.children[2].innerHTML": "\"<%= grunt.file.read('build/glsl/fragment.glsl') %>\"",
             "gl.TRIANGLES": 4,
+            "gl.SRC_ALPHA": 770,
+            "gl.ONE_MINUS_SRC_ALPHA": 771,
+            "gl.BLEND": 3042,
+            "gl.TEXTURE_2D": 3553,
+            "gl.UNSIGNED_BYTE": 5121,
             "gl.FLOAT": 5126,
+            "gl.RGBA": 6408,
+            "gl.LINEAR_MIPMAP_LINEAR": 9987,
+            "gl.TEXTURE_MIN_FILTER": 10241,
             "gl.COLOR_BUFFER_BIT": 16384,
+            "gl.TEXTURE0": 33984,
             "gl.ARRAY_BUFFER": 34962,
             "gl.DYNAMIC_DRAW": 35048,
             "gl.FRAGMENT_SHADER": 35632,
             "gl.VERTEX_SHADER": 35633,
+            "gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL": 37441,
             "gl.activeTexture": "gl[0]",
             "gl.attachShader": "gl[1]",
             "gl.bindAttribLocation": "gl[2]",
@@ -223,27 +234,6 @@ module.exports = function(grunt) {
           }
         ]
       },
-
-      var: {
-        options: {
-          usePrefix: false,
-          force: true,
-          patterns: [
-            {
-              match: /var /g,
-              replacement: ""
-            },
-          ],
-        },
-        files: [
-          {
-            expand: true,
-            flatten: true,
-            src: [ "<%= path.min %>" ],
-            dest: "build/"
-          }
-        ]
-      },
     },
 
     uglify: {
@@ -354,7 +344,6 @@ module.exports = function(grunt) {
     "replace:glsl",
     "replace:dist",
     "uglify",
-    "replace:var",
     "cssmin",
     "processhtml",
     "htmlmin",
