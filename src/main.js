@@ -6,7 +6,7 @@ function raf() {
 
     // Update view matrix (animate translation)
     gl.uniformMatrix4fv(m, v.set([
-        1, 0, Math.sin(tmp) * 16, 0,
+        1, 0, Math.sin(tmp) * 28.5, 0,
         0, 1, 0, 0,
         0, 0, 1, 1,
         0, 0, 0, 1

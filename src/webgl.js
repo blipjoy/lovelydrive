@@ -91,12 +91,12 @@ gl.uniformMatrix4fv(
         u = new Float32Array([ 1, 1, 1, 1 ]) // `u` is assigned here; This is my color buffer
     ),
     // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
-    // FOV = 45° == (Math.PI / 4) RAD
+    // FOV = 90° == (Math.PI / 2) RAD
     // near = 10
     // far = 50
     new Float32Array([
-        Math.tan(Math.PI * .5 - .5 * (Math.PI / 4)) / (document.body.clientWidth / document.body.clientHeight), 0, 0, 0,
-        0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 4)), 0, 0,
+        Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)) / (document.body.clientWidth / document.body.clientHeight), 0, 0, 0,
+        0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)), 0, 0,
         0, 0, (10 + 50) * (1.0 / (10 - 50)), -1,
         0, 0, 10 * 50 * (1.0 / (10 - 50)) * 2, 0
     ])
