@@ -144,8 +144,8 @@ for (var i = 0; i < 8; i++) {
         for (var x = 0; x <= fractalSize; x++) {
             ctx.lineTo(x / fractalSize * textureMapW,
                 (
-                    1 - fractalData[y + i * 16][x] * ((8 - i) / 16 + .5)
-                ) * textureMapH
+                    1 - (fractalData[y + i * 16][x] * ((8 - i) / 16 + .5) * .8 + .2)
+                ) * textureMapH + y / 16 * .2 * textureMapH
             )
         }
 
