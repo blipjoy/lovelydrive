@@ -2,12 +2,12 @@
 function mountainVertices(layer, scale, z) {
     function quad(offset) {
         return [
-            (-4 + offset) * scale, scale - layer, z, 1, x1, y1,     // Upper left corner
-            (4 + offset) * scale, scale - layer, z, 1, x2, y1,      // Upper right corner
-            (-4 + offset) * scale, -scale - layer, z, 1, x1, y2,    // Lower left corner
-            (-4 + offset) * scale, -scale - layer, z, 1, x1, y2,    // Lower left corner
-            (4 + offset) * scale, scale - layer, z, 1, x2, y1,      // Upper right corner
-            (4 + offset) * scale, -scale - layer, z, 1, x2, y2      // Lower right corner
+            (-4 + offset) * scale, scale - layer, z, x1, y1,     // Upper left corner
+            (4 + offset) * scale, scale - layer, z, x2, y1,      // Upper right corner
+            (-4 + offset) * scale, -scale - layer, z, x1, y2,    // Lower left corner
+            (-4 + offset) * scale, -scale - layer, z, x1, y2,    // Lower left corner
+            (4 + offset) * scale, scale - layer, z, x2, y1,      // Upper right corner
+            (4 + offset) * scale, -scale - layer, z, x2, y2      // Lower right corner
         ]
     }
 
@@ -19,12 +19,12 @@ function mountainVertices(layer, scale, z) {
 
     // Quads
     return quad(-8).concat(quad(0), quad(8), [
-        -12 * scale, -scale - layer, z, 1, x1, y2,      // Upper left corner
-        12 * scale, -scale - layer, z, 1, x1, y2,       // Upper right corner
-        -12 * scale, -scale * 4 - layer, z, 1, x1, y2,  // Lower left corner
-        -12 * scale, -scale * 4 - layer, z, 1, x1, y2,  // Lower left corner
-        12 * scale, -scale - layer, z, 1, x1, y2,       // Upper right corner
-        12 * scale, -scale * 4 - layer, z, 1, x1, y2    // Lower right corner
+        -12 * scale, -scale - layer, z, x1, y2,      // Upper left corner
+        12 * scale, -scale - layer, z, x1, y2,       // Upper right corner
+        -12 * scale, -scale * 4 - layer, z, x1, y2,  // Lower left corner
+        -12 * scale, -scale * 4 - layer, z, x1, y2,  // Lower left corner
+        12 * scale, -scale - layer, z, x1, y2,       // Upper right corner
+        12 * scale, -scale * 4 - layer, z, x1, y2    // Lower right corner
     ])
 }
 

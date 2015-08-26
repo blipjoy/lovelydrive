@@ -69,14 +69,14 @@ gl.vertexAttribPointer(
     gl.FLOAT,
     gl.enableVertexAttribArray(gl.vertexAttribPointer(
         gl.getAttribLocation(handle, "v"),
-        4, // Number of floats
+        3, // Number of floats
         gl.FLOAT,
         gl.enableVertexAttribArray(1),
-        24, // Stride: (4 + 2) * 4
+        20, // Stride: (3 + 2) * 4
         gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
     )),
-    24, // Stride: (4 + 2) * 4
-    16  // Offset: 4 * 4
+    20, // Stride: (3 + 2) * 4
+    12  // Offset: 3 * 4
 )
 
 
