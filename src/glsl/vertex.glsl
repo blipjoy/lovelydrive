@@ -11,5 +11,5 @@ void main(void) {
     t = u;
 
     // Transform the vertex position by the projection and view matrices
-    gl_Position = v * m * p;
+    gl_Position = p * m * v;
 }
