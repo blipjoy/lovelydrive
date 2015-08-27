@@ -1,6 +1,9 @@
 
 // Render loop
 function raf() {
+    // Responsive canvas sizing
+    resize_canvas()
+
     // Animation state
     tmp = Date.now() / -50 % (geoScale * 4)
 

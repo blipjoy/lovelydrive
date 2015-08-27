@@ -1,12 +1,16 @@
 // Initialize WebGL
-document.body.firstChild.width = document.body.clientWidth
-document.body.firstChild.height = document.body.clientHeight
 var gl = document.body.firstChild.getContext("webgl", { alpha: 0 })
 
 // Hash all WebGL methods
 // See Gruntfile.js for hash replacements
 var tmp = []
 for (i in gl) {
+// XXX: <DEBUG>
+    // Workaround a bug in WebGL Inspector
+    // See: https://github.com/benvanik/WebGL-Inspector/issues/134
+    gl[i] &&
+// XXX: </DEBUG>
+
     // First, filter the methods into an array
     gl[i].bind && tmp.push(i)
 }
@@ -14,8 +18,6 @@ for (i in tmp.sort()) {
     // Then map the sorted methods into the array
     gl[i] = gl[tmp[i]].bind(gl)
 }
-
-gl.viewport(0, 0, document.body.clientWidth, document.body.clientHeight)
 
 // Build the shader program
 var handle = gl.createProgram()
@@ -83,24 +85,39 @@ gl.vertexAttribPointer(
 // Initialize uniform variables
 m = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
 v = new Float32Array(16) // This is my view matrix
-
-gl.uniformMatrix4fv(
-    gl.getUniformLocation(handle, "p"),
-    gl.uniform4fv(
-        c = gl.getUniformLocation(handle, "c"),
-        u = new Float32Array([ 1, 1, 1, 1 ]) // `u` is assigned here; This is my color buffer
-    ),
-    // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
-    // FOV = 90° == (Math.PI / 2) RAD
-    // near = 10
-    // far = 50
-    new Float32Array([
-        Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)) / (document.body.clientWidth / document.body.clientHeight), 0, 0, 0,
-        0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)), 0, 0,
-        0, 0, (10 + 50) * (1.0 / (10 - 50)), -1,
-        0, 0, 10 * 50 * (1.0 / (10 - 50)) * 2, 0
-    ])
+gl.uniform4fv(
+    c = gl.getUniformLocation(handle, "c"),
+    u = new Float32Array([ 1, 1, 1, 1 ]) // `u` is assigned here; This is my color buffer
 )
+
+function resize_canvas() {
+    if (
+        gl.canvas.width != gl.canvas.clientWidth ||
+        gl.canvas.height != gl.canvas.clientHeight
+    ) {
+        gl.viewport(
+            0,
+            0,
+            gl.canvas.width = gl.canvas.clientWidth,
+            gl.canvas.height = gl.canvas.clientHeight
+        )
+
+        gl.uniformMatrix4fv(
+            gl.getUniformLocation(handle, "p"),
+            0,
+            // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
+            // FOV = 90° == (Math.PI / 2) RAD
+            // near = 1
+            // far = 50
+            new Float32Array([
+                Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)) / (gl.canvas.clientWidth / gl.canvas.clientHeight), 0, 0, 0,
+                0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)), 0, 0,
+                0, 0, (1 + 50) * (1.0 / (1 - 50)), -1,
+                0, 0, 1 * 50 * (1.0 / (1 - 50)) * 2, 0
+            ])
+        )
+    }
+}
 
 /*
 // Set texture sampler
