@@ -16,7 +16,7 @@
  * edges of our geometry... This is just done on a best effort; use more quads!
  *
  * Using 5 quads across (each 4 units wide) works with screen aspect ratios up
- * to about 3.64:1 when scaling by 30 units.
+ * to about 2.4:1 when scaling by 20 units.
  */
 
 var geoScale = 20 // I don't know why! :) Maybe because science!
