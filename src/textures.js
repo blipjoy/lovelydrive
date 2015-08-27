@@ -139,7 +139,11 @@ for (var i = 0; i < 8; i++) {
             "222)"
 
         ctx.moveTo(-4, textureMapH + 4)
-        ctx.lineTo(-4, (1 - fractalData[y + i * 16][0] * ((8 - i) / 16 + .5)) * textureMapH)
+        ctx.lineTo(-4,
+            (
+                1 - (fractalData[y + i * 16][0] * ((8 - i) / 16 + .5) * .8 + .2)
+            ) * textureMapH + y / 16 * .2 * textureMapH
+        )
 
         for (var x = 0; x <= fractalSize; x++) {
             ctx.lineTo(x / fractalSize * textureMapW,
@@ -149,7 +153,11 @@ for (var i = 0; i < 8; i++) {
             )
         }
 
-        ctx.lineTo(textureMapW + 4, (1 - fractalData[y + i * 16][0] * ((8 - i) / 16 + .5)) * textureMapH)
+        ctx.lineTo(textureMapW + 4,
+            (
+                1 - (fractalData[y + i * 16][0] * ((8 - i) / 16 + .5) * .8 + .2)
+            ) * textureMapH + y / 16 * .2 * textureMapH
+        )
         ctx.lineTo(textureMapW + 4, textureMapH + 4)
         ctx.fill()
     }
