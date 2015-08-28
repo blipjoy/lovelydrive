@@ -26,12 +26,12 @@ function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            (-2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x1, y1, // Upper left corner
-            ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x2, y1, // Upper right corner
-            (-2 + offset) * geoScale,          - layer * geoScale / 15, z, x1, y2, // Lower left corner
-            (-2 + offset) * geoScale,          - layer * geoScale / 15, z, x1, y2, // Lower left corner
-            ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x2, y1, // Upper right corner
-            ( 2 + offset) * geoScale,          - layer * geoScale / 15, z, x2, y2  // Lower right corner
+            (-2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x1, y1, 1, 1, 1, 1, // Upper left corner
+            ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x2, y1, 1, 1, 1, 1, // Upper right corner
+            (-2 + offset) * geoScale,          - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Lower left corner
+            (-2 + offset) * geoScale,          - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Lower left corner
+            ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, x2, y1, 1, 1, 1, 1, // Upper right corner
+            ( 2 + offset) * geoScale,          - layer * geoScale / 15, z, x2, y2, 1, 1, 1, 1  // Lower right corner
         ]
     }
 
@@ -44,12 +44,12 @@ function mountainVertices(layer) {
 
     // Quads
     return quad(-8).concat(quad(-4), quad(0), quad(4), quad(8), [
-        -14 * geoScale,               - layer * geoScale / 15, z, x1, y2, // Upper left corner
-         14 * geoScale,               - layer * geoScale / 15, z, x1, y2, // Upper right corner
-        -14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2, // Lower left corner
-        -14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2, // Lower left corner
-         14 * geoScale,               - layer * geoScale / 15, z, x1, y2, // Upper right corner
-         14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2  // Lower right corner
+        -14 * geoScale,               - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Upper left corner
+         14 * geoScale,               - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Upper right corner
+        -14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Lower left corner
+        -14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Lower left corner
+         14 * geoScale,               - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1, // Upper right corner
+         14 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, x1, y2, 1, 1, 1, 1  // Lower right corner
     ])
 }
 

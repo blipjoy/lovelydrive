@@ -66,29 +66,33 @@ gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
 
 // Initialize attribute variables
 gl.vertexAttribPointer(
-    gl.getAttribLocation(handle, "u"),
+    gl.getAttribLocation(handle, "c"),
     2, // Number of floats
     gl.FLOAT,
-    gl.enableVertexAttribArray(gl.vertexAttribPointer(
-        gl.getAttribLocation(handle, "v"),
-        3, // Number of floats
+    gl.vertexAttribPointer(
+        gl.getAttribLocation(handle, "u"),
+        2, // Number of floats
         gl.FLOAT,
-        gl.enableVertexAttribArray(1),
-        20, // Stride: (3 + 2) * 4
-        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
-    )),
-    20, // Stride: (3 + 2) * 4
-    12  // Offset: 3 * 4
+        gl.enableVertexAttribArray(gl.vertexAttribPointer(
+            gl.getAttribLocation(handle, "v"),
+            3, // Number of floats
+            gl.FLOAT,
+            gl.enableVertexAttribArray(1),
+            36, // Stride: (4 + 3 + 2) * 4
+            gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
+        )),
+        36, // Stride: (4 + 3 + 2) * 4
+        12  // Offset: 3 * 4
+    ),
+    36, // Stride: (4 + 3 + 2) * 4
+    20  // Offset: (3 + 2) * 4
 )
+gl.enableVertexAttribArray(2)
 
 
 // Initialize uniform variables
 m = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
 v = new Float32Array(16) // This is my view matrix
-gl.uniform4fv(
-    c = gl.getUniformLocation(handle, "c"),
-    u = new Float32Array([ 1, 1, 1, 1 ]) // `u` is assigned here; This is my color buffer
-)
 
 function resize_canvas() {
     if (
