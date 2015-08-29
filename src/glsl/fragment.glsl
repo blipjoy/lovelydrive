@@ -1,6 +1,6 @@
 precision highp float;
 
-uniform sampler2D s; // Texture
+uniform sampler2D s; // Texture Sampler2D
 
 varying vec4 i; // Interpolation Color
 varying vec2 t; // Texture coordinates

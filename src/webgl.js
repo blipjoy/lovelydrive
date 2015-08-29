@@ -55,13 +55,10 @@ if (!gl.getProgramParameter(handle, gl.LINK_STATUS)) {
 gl.useProgram(handle)
 
 
-// Initialize background color (default is white)
-gl.clearColor(102 / 255, 145 / 255, 220 / 255, 1)
-
 // Enable blending
-gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-gl.enable(gl.BLEND);
-gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1);
+gl.enable(gl.BLEND)
+gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
+gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1)
 
 
 // Initialize attribute variables
@@ -91,9 +88,14 @@ gl.enableVertexAttribArray(2)
 
 
 // Initialize uniform variables
-m = gl.getUniformLocation(handle, "m") // This is my view matrix pointer
-v = new Float32Array(16) // This is my view matrix
+var textureSampler =            gl.getUniformLocation(handle, "s")
+var projectionMatrixPointer =   gl.getUniformLocation(handle, "p")
+var viewMatrixPointer =         gl.getUniformLocation(handle, "m")
 
+var viewMatrix = new Float32Array("1000010000100001".split(""))
+
+
+// Resize function
 function resize_canvas() {
     if (
         gl.canvas.width != gl.canvas.clientWidth ||
@@ -107,26 +109,18 @@ function resize_canvas() {
         )
 
         gl.uniformMatrix4fv(
-            gl.getUniformLocation(handle, "p"),
+            projectionMatrixPointer,
             0,
             // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
             // FOV = 90° == (Math.PI / 2) RAD
             // near = 1
-            // far = 50
+            // far = 52
             new Float32Array([
                 Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)) / (gl.canvas.clientWidth / gl.canvas.clientHeight), 0, 0, 0,
                 0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)), 0, 0,
-                0, 0, (1 + 50) * (1.0 / (1 - 50)), -1,
-                0, 0, 1 * 50 * (1.0 / (1 - 50)) * 2, 0
+                0, 0, (1 + 52) * (1.0 / (1 - 52)), -1,
+                0, 0, 1 * 52 * (1.0 / (1 - 52)) * 2, 0
             ])
         )
     }
 }
-
-/*
-// Set texture sampler
-gl.uniform1i(
-    s = gl.getUniformLocation(handle, "s"),
-    0 // default is 0... I'll just save this here for later...
-)
-*/

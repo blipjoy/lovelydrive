@@ -1,8 +1,8 @@
 /*
- * Texture memory layout:
- *
- * 0: clouds and mountains
+ * Texture memory layout
  */
+var textureIdDefault = 0    // White 1x1 (for gradients, etc.)
+var textureIdMountains = 1  // Clouds and mountains
 
 
 // Procedural texture generation
@@ -20,6 +20,22 @@ var img = ctx.createImageData(textureMapW, textureMapW)
 // XXX: </DEBUG>
 
 
+// Upload a white 1x1 texture for drawing solid-color quads
+gl.texImage2D(
+    gl.TEXTURE_2D,
+    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture()),
+    gl.RGBA,
+    1,
+    1,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([ 255, 255, 255, 255 ])
+)
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
+
+
 /*
  * Multiple cloud layers:
  *
@@ -27,7 +43,7 @@ var img = ctx.createImageData(textureMapW, textureMapW)
  * - Clouds are rendered in the alpha channel of a solid color: rgb(220,200,220)
  * - Give each layer a constant velocity (wind)
  * - In the scene, draw the upper and lower halves of each cloud with a linear
- *   gradient fading at the bottom; rgba(1,1,1,1)..rgb(1,1,1,0)
+ *   gradient fading at the bottom; rgba(1,1,1,1)..rgb(0,0,0,0)
  */
 for (var i = 0; i < 2; i++) {
     // Setup initial fractal state
@@ -82,21 +98,6 @@ for (var i = 0; i < 2; i++) {
 }
 
 
-// Reinitialize fractal state
-fractalData[0][0] =
-fractalData[0][fractalSize] =
-fractalData[fractalSize][0] =
-fractalData[fractalSize][fractalSize] = .5 // Corners
-
-diamond(0, 0, fractalSize, 2, height) // Center
-square(0, 0, fractalSize, 2, height)
-
-// Empty worker queue
-while (fractalQueue.length) {
-    square.apply(square, fractalQueue.shift())
-}
-
-
 /*
  * 16 layers can be packed into 4 textures (each layer is 1/4 texture height)
  * Draw 8 ridges per layer with pre-computed fog (? Need a good interpolation function)
@@ -123,6 +124,20 @@ while (fractalQueue.length) {
  * - Group all objects by texture; draw the entire group in one call
  */
 
+// Reinitialize fractal state
+fractalData[0][0] =
+fractalData[0][fractalSize] =
+fractalData[fractalSize][0] =
+fractalData[fractalSize][fractalSize] = .5 // Corners
+
+diamond(0, 0, fractalSize, 2, height) // Center
+square(0, 0, fractalSize, 2, height)
+
+// Empty worker queue
+while (fractalQueue.length) {
+    square.apply(square, fractalQueue.shift())
+}
+
 // RENDER MOUNTAINS
 ctx.translate(8, 8)
 for (var i = 0; i < 8; i++) {
@@ -130,13 +145,11 @@ for (var i = 0; i < 8; i++) {
         ctx.beginPath()
 
         // Choose a color based on depth
-        // FIXME: Use fragment shader to add fog (based on depth)
         ctx.fillStyle =
             "rgb(" +
-            // TODO: Implement fog in the fragment shader
-            ~~((fractalSize - (y + i * 16) * .4) / fractalSize * 200) + "," +
-            ~~((fractalSize - (y + i * 16) * .6) / fractalSize * 184) + "," +
-            "222)"
+            ~~(((16 - y) / 16 * .125 + .875) * 255) + "," +
+            ~~(((16 - y) / 16 * .125 + .875) * 255) + "," +
+            "255)"
 
         ctx.moveTo(-4, textureMapH + 4)
         ctx.lineTo(-4,
@@ -164,7 +177,9 @@ for (var i = 0; i < 8; i++) {
     ctx.translate(0, textureMapH + 16)
 }
 
-// Upload our new texture to the GPU
+
+// Upload the mountains/clouds texture to the GPU
+gl.activeTexture(gl.TEXTURE1)
 gl.texImage2D(
     gl.TEXTURE_2D,
     gl.bindTexture(gl.TEXTURE_2D, gl.createTexture()),
@@ -172,7 +187,7 @@ gl.texImage2D(
     gl.RGBA,
     gl.UNSIGNED_BYTE,
     ctx.canvas
-);
+)
 
 // Disable mipmap on the background texture (not needed, and causes texture seams)
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)

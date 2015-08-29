@@ -4,8 +4,8 @@
 <!-- Vertex shader: src/glsl/vertex.glsl -->
 <script type="x-shader/x-vertex">
     attribute vec4 c; // Interpolation Color
-    attribute vec4 v; // Vertex position
     attribute vec2 u; // Texture coordinates
+    attribute vec4 v; // Vertex position
 
     uniform mat4 p; // Projection matrix
     uniform mat4 m; // View matrix
@@ -27,7 +27,7 @@
 <script type="x-shader/x-fragment">
     precision highp float;
 
-    uniform sampler2D s; // Texture
+    uniform sampler2D s; // Texture Sampler2D
 
     varying vec4 i; // Interpolation Color
     varying vec2 t; // Texture coordinates

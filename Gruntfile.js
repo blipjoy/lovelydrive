@@ -75,6 +75,7 @@ module.exports = function(grunt) {
             "gl.TEXTURE_MIN_FILTER": 10241,
             "gl.COLOR_BUFFER_BIT": 16384,
             "gl.TEXTURE0": 33984,
+            "gl.TEXTURE1": 33985,
             "gl.ARRAY_BUFFER": 34962,
             "gl.DYNAMIC_DRAW": 35048,
             "gl.FRAGMENT_SHADER": 35632,
