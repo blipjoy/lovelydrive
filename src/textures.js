@@ -81,9 +81,7 @@ for (var i = 0; i < 2; i++) {
                 ) / 2
 
             // Choose color and alpha based on node height
-            img.data[tmp++] = 102 + h * 118 // 102 -> 220
-            img.data[tmp++] = 145 + h * 55 // 145 -> 200
-            img.data[tmp++] = 220
+            img.data[tmp++] = img.data[tmp++] = img.data[tmp++] = 255
             img.data[tmp++] = h * 255
         }
     }

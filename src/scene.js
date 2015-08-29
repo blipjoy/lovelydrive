@@ -30,19 +30,20 @@
  * to about 2.4:1 when scaling by 20 units.
  */
 
-var geoScale = 20 // I don't know why! :) Maybe because science!
+var mountainScale = 20 // I don't know why! :) Maybe because science!
+var cloudScale = 51 // Same as depth!
 
 // Generate vertex attributes for mountain layers
 function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, // Upper right corner
-            r, g, b, 1, x1, y2, (-2 + offset) * geoScale,          - layer * geoScale / 15, z, // Lower left corner
-            r, g, b, 1, x1, y2, (-2 + offset) * geoScale,          - layer * geoScale / 15, z, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * geoScale, geoScale - layer * geoScale / 15, z, // Upper right corner
-            r, g, b, 1, x2, y2, ( 2 + offset) * geoScale,          - layer * geoScale / 15, z  // Lower right corner
+            r, g, b, 1, x1, y1, (-2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
+            r, g, b, 1, x1, y2, (-2 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
+            r, g, b, 1, x1, y2, (-2 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
+            r, g, b, 1, x2, y2, ( 2 + offset) * mountainScale,               - layer * mountainScale / 15, z  // Lower right corner
         ]
     }
 
@@ -66,14 +67,43 @@ function mountainVertices(layer) {
 
     // Quads
     return quad(-8).concat(quad(-4), quad(0), quad(4), quad(8), [
-        r, g, b, 1, x1, y2, -10 * geoScale,               - layer * geoScale / 15, z, // Upper left corner
-        r, g, b, 1, x1, y2,  10 * geoScale,               - layer * geoScale / 15, z, // Upper right corner
-        r, g, b, 1, x1, y2, -10 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, // Lower left corner
-        r, g, b, 1, x1, y2, -10 * geoScale, 6 * -geoScale - layer * geoScale / 15, z, // Lower left corner
-        r, g, b, 1, x1, y2,  10 * geoScale,               - layer * geoScale / 15, z, // Upper right corner
-        r, g, b, 1, x1, y2,  10 * geoScale, 6 * -geoScale - layer * geoScale / 15, z  // Lower right corner
+        r, g, b, 1, x1, y2, -10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper left corner
+        r, g, b, 1, x1, y2,  10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper right corner
+        r, g, b, 1, x1, y2, -10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, // Lower left corner
+        r, g, b, 1, x1, y2, -10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, // Lower left corner
+        r, g, b, 1, x1, y2,  10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper right corner
+        r, g, b, 1, x1, y2,  10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z  // Lower right corner
     ])
 }
+
+
+// Generate vertex attributes for cloud layers
+function cloudVertices(layer) {
+    function quad(offset) {
+        // Return a quad that is .5 units high and 4 units wide
+        return [
+            r, g, b, 1, x1, y1, (-2 + offset) * cloudScale, cloudScale, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, // Upper right corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, // Lower left corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, // Upper right corner
+            0, 0, 0, 0, x2, y2, ( 2 + offset) * cloudScale,          0, z  // Lower right corner
+        ]
+    }
+
+    var x1 = .5 + 8 / textureSize,
+        x2 = 1 - 8 / textureSize,
+        y1 = layer / 4 + 8 / textureSize,
+        y2 = y1 + .25,
+        z = layer * 8 - cloudScale,
+        // Sunset
+        r = [ 239, 102,  62, 221 ][layer] / 255,
+        g = [ 137, 145,  22, 148 ][layer] / 255,
+        b = [  44, 220, 121,  92 ][layer] / 255
+
+    return quad(-4).concat(quad(0), quad(4))
+}
+
 
 
 // Fill the vertex attribute buffer
@@ -98,6 +128,12 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
         255 / 255, 223 / 255, 145 / 255, 1, 0, 0,  52 * 5,  0, -52  // Lower right corner
 //*/
     ]
+
+    // Cloud geometry
+    .concat(cloudVertices(0))
+    .concat(cloudVertices(1))
+    .concat(cloudVertices(2))
+    .concat(cloudVertices(3))
 
     // Mountain geometry
     .concat(mountainVertices(0))
