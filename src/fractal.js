@@ -11,7 +11,7 @@ var fractalQueue = []
 
 
 // Height map function
-function height(value, weight) {
+function heightMapFn(value, weight) {
     return Math.max(Math.min(value + (Math.random() - .5) * weight, 1), 0)
 }
 
@@ -58,5 +58,20 @@ function square(x, y, w, s, f) {
         fractalQueue.push([ x + w, y, w, s, f ])
         fractalQueue.push([ x, y + w, w, s, f ])
         fractalQueue.push([ x + w, y + w, w, s, f ])
+    }
+}
+
+function fractal(corners, fn) {
+    fractalData[0][0] =
+        fractalData[0][fractalSize] =
+        fractalData[fractalSize][0] =
+        fractalData[fractalSize][fractalSize] = corners
+
+    diamond(0, 0, fractalSize, 2, fn) // Center
+    square(0, 0, fractalSize, 2, fn)
+
+    // Empty worker queue
+    while (fractalQueue.length) {
+        square.apply(square, fractalQueue.shift())
     }
 }

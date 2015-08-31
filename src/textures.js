@@ -47,18 +47,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
  */
 for (var i = 0; i < 2; i++) {
     // Setup initial fractal state
-    fractalData[0][0] =
-    fractalData[0][fractalSize] =
-    fractalData[fractalSize][0] =
-    fractalData[fractalSize][fractalSize] = .3 // Corners
-
-    diamond(0, 0, fractalSize, 2, height) // Center
-    square(0, 0, fractalSize, 2, height)
-
-    // Empty worker queue
-    while (fractalQueue.length) {
-        square.apply(square, fractalQueue.shift())
-    }
+    fractal(.3, heightMapFn)
 
     // RENDER CLOUDS
     tmp = 0
@@ -123,18 +112,7 @@ for (var i = 0; i < 2; i++) {
  */
 
 // Reinitialize fractal state
-fractalData[0][0] =
-fractalData[0][fractalSize] =
-fractalData[fractalSize][0] =
-fractalData[fractalSize][fractalSize] = .5 // Corners
-
-diamond(0, 0, fractalSize, 2, height) // Center
-square(0, 0, fractalSize, 2, height)
-
-// Empty worker queue
-while (fractalQueue.length) {
-    square.apply(square, fractalQueue.shift())
-}
+fractal(.5, heightMapFn)
 
 // RENDER MOUNTAINS
 ctx.translate(8, 8)
