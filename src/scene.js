@@ -38,12 +38,12 @@ function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
-            r, g, b, 1, x1, y2, (-2 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
-            r, g, b, 1, x1, y2, (-2 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
-            r, g, b, 1, x2, y2, ( 2 + offset) * mountainScale,               - layer * mountainScale / 15, z  // Lower right corner
+            r, g, b, 1, x1, y1, (-3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
+            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
+            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
+            r, g, b, 1, x2, y2, ( 3 + offset) * mountainScale,               - layer * mountainScale / 15, z  // Lower right corner
         ]
     }
 
@@ -66,7 +66,7 @@ function mountainVertices(layer) {
 //*/
 
     // Quads
-    return quad(-8).concat(quad(-4), quad(0), quad(4), quad(8), [
+    return quad(-12).concat(quad(-6), quad(0), quad(6), quad(12), [
         r, g, b, 1, x1, y2, -10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper left corner
         r, g, b, 1, x1, y2,  10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper right corner
         r, g, b, 1, x1, y2, -10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, // Lower left corner

@@ -18,11 +18,10 @@ function raf() {
     gl.uniform1i(textureSampler, textureIdMountains)
     gl.drawArrays(gl.TRIANGLES, 6, 4 * 3 * 6) // 4 layers * 3 quads * 6 vertices
 
-
     // Draw mountains
-    viewMatrix[12] = Date.now() / -500 % (mountainScale * 4)
+    viewMatrix[12] = Date.now() / -500 % (mountainScale * 6)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
-    gl.drawArrays(gl.TRIANGLES, 6 + 4 * 3 * 6, 8 * 6 * 6) // 9 layers * 6 quads * 6 vertices
+    gl.drawArrays(gl.TRIANGLES, 6 + 4 * 3 * 6, 8 * 6 * 6) // 9 layers * 4 quads * 6 vertices
 
     requestAnimationFrame(raf)
 }
