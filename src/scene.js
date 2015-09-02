@@ -38,12 +38,12 @@ function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            r, g, b, 1, x1, y1, (-3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
-            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
-            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, // Lower left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, // Upper right corner
-            r, g, b, 1, x2, y2, ( 3 + offset) * mountainScale,               - layer * mountainScale / 15, z  // Lower right corner
+            r, g, b, 1, x1, y1, (-3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, 1, // Upper left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, 1, // Upper right corner
+            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, 1, // Lower left corner
+            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * mountainScale / 15, z, 1, // Lower left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * mountainScale / 15, z, 1, // Upper right corner
+            r, g, b, 1, x2, y2, ( 3 + offset) * mountainScale,               - layer * mountainScale / 15, z, 1  // Lower right corner
         ]
     }
 
@@ -67,12 +67,12 @@ function mountainVertices(layer) {
 
     // Quads
     return quad(-12).concat(quad(-6), quad(0), quad(6), quad(12), [
-        r, g, b, 1, x1, y2, -10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper left corner
-        r, g, b, 1, x1, y2,  10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper right corner
-        r, g, b, 1, x1, y2, -10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, // Lower left corner
-        r, g, b, 1, x1, y2, -10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, // Lower left corner
-        r, g, b, 1, x1, y2,  10 * mountainScale,                    - layer * mountainScale / 15, z, // Upper right corner
-        r, g, b, 1, x1, y2,  10 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z  // Lower right corner
+        r, g, b, 1, x1, y2, -15 * mountainScale,                    - layer * mountainScale / 15, z, 1, // Upper left corner
+        r, g, b, 1, x1, y2,  15 * mountainScale,                    - layer * mountainScale / 15, z, 1, // Upper right corner
+        r, g, b, 1, x1, y2, -15 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, 1, // Lower left corner
+        r, g, b, 1, x1, y2, -15 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, 1, // Lower left corner
+        r, g, b, 1, x1, y2,  15 * mountainScale,                    - layer * mountainScale / 15, z, 1, // Upper right corner
+        r, g, b, 1, x1, y2,  15 * mountainScale, 6 * -mountainScale - layer * mountainScale / 15, z, 1  // Lower right corner
     ])
 }
 
@@ -82,12 +82,12 @@ function cloudVertices(layer) {
     function quad(offset) {
         // Return a quad that is .5 units high and 4 units wide
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * cloudScale, cloudScale, z, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, // Upper right corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, // Lower left corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, // Upper right corner
-            0, 0, 0, 0, x2, y2, ( 2 + offset) * cloudScale,          0, z  // Lower right corner
+            r, g, b, 1, x1, y1, (-2 + offset) * cloudScale, cloudScale, z, 1, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, 1, // Upper right corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, 1, // Lower left corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, 1, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, 1, // Upper right corner
+            0, 0, 0, 0, x2, y2, ( 2 + offset) * cloudScale,          0, z, 1  // Lower right corner
         ]
     }
 
@@ -112,20 +112,20 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
     [
 /*
         // Noon
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0, -52 * 5, 52, -52, // Upper left corner
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  52 * 5, 52, -52, // Upper right corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -52 * 5,  0, -52, // Lower left corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -52 * 5,  0, -52, // Lower left corner
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  52 * 5, 52, -52, // Upper right corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0,  52 * 5,  0, -52  // Lower right corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0, -52 * 5, 52, -52, 0, // Upper left corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  52 * 5, 52, -52, 0, // Upper right corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -52 * 5,  0, -52, 0, // Lower left corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -52 * 5,  0, -52, 0, // Lower left corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  52 * 5, 52, -52, 0, // Upper right corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0,  52 * 5,  0, -52, 0  // Lower right corner
 /*/
         // Sunset
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0, -52 * 5, 52, -52, // Upper left corner
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  52 * 5, 52, -52, // Upper right corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -52 * 5,  0, -52, // Lower left corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -52 * 5,  0, -52, // Lower left corner
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  52 * 5, 52, -52, // Upper right corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0,  52 * 5,  0, -52  // Lower right corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0, -52 * 5, 52, -52, 0, // Upper left corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  52 * 5, 52, -52, 0, // Upper right corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -52 * 5,  0, -52, 0, // Lower left corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -52 * 5,  0, -52, 0, // Lower left corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  52 * 5, 52, -52, 0, // Upper right corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0,  52 * 5,  0, -52, 0  // Lower right corner
 //*/
     ]
 

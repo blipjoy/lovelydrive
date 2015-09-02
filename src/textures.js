@@ -1,8 +1,9 @@
 /*
  * Texture memory layout
+ *
+ * 0: White 1x1 (for gradients, etc.)
+ * 1: Clouds and mountains
  */
-var textureIdDefault = 0    // White 1x1 (for gradients, etc.)
-var textureIdMountains = 1  // Clouds and mountains
 
 
 // Procedural texture generation
