@@ -100,7 +100,7 @@ var projectionMatrixPointer =   gl.getUniformLocation(handle, "p")
 var viewMatrixPointer =         gl.getUniformLocation(handle, "m")
 
 gl.uniform1iv(gl.getUniformLocation(handle, "s"), [ 0, 1 ])
-var viewMatrix = new Float32Array("1000010000100001".split(""))
+var viewMatrix = new Float32Array(mat4Identity)
 
 
 // Resize function
@@ -122,12 +122,12 @@ function resize_canvas() {
             // Perspective projection matrix: http://webglfundamentals.org/webgl/lessons/webgl-3d-perspective.html
             // FOV = 90° == (Math.PI / 2) RAD
             // near = 1
-            // far = 52
+            // far = 54
             new Float32Array([
                 Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)) / (gl.canvas.clientWidth / gl.canvas.clientHeight), 0, 0, 0,
                 0, Math.tan(Math.PI * .5 - .5 * (Math.PI / 2)), 0, 0,
-                0, 0, (1 + 52) * (1.0 / (1 - 52)), -1,
-                0, 0, 1 * 52 * (1.0 / (1 - 52)) * 2, 0
+                0, 0, (1 + 54) * (1.0 / (1 - 54)), -1,
+                0, 0, 1 * 54 * (1.0 / (1 - 54)) * 2, 0
             ])
         )
     }

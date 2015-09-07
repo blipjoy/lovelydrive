@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
+          "src/math.js",
           "src/webgl.js",
           "src/fractal.js",
           "src/textures.js",
@@ -244,6 +245,7 @@ module.exports = function(grunt) {
         preserveComments: false,
         mangle: {
           toplevel: true,
+          eval: true,
         }
       },
       dist: {

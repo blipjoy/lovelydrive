@@ -15,11 +15,6 @@ var ctx = document.createElement("canvas").getContext("2d")
 ctx.canvas.width = ctx.canvas.height = textureSize
 var img = ctx.createImageData(textureMapW, textureMapW)
 
-// XXX: <DEBUG>
-//document.body.firstChild.style.display = "none"
-//document.body.appendChild(ctx.canvas)
-// XXX: </DEBUG>
-
 
 // Upload a white 1x1 texture for drawing solid-color quads
 gl.texImage2D(
@@ -48,7 +43,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
  */
 for (var i = 0; i < 2; i++) {
     // Setup initial fractal state
-    fractal(.3, heightMapFn)
+    fractal(.3, 2, heightMapFn, halfWeightFn)
 
     // RENDER CLOUDS
     tmp = 0
@@ -113,7 +108,7 @@ for (var i = 0; i < 2; i++) {
  */
 
 // Reinitialize fractal state
-fractal(.5, heightMapFn)
+fractal(.5, 2, heightMapFn, halfWeightFn)
 
 // RENDER MOUNTAINS
 ctx.translate(8, 8)

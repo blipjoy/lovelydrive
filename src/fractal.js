@@ -15,60 +15,80 @@ function heightMapFn(value, weight) {
     return Math.max(Math.min(value + (Math.random() - .5) * weight, 1), 0)
 }
 
-function diamond(x, y, w, s, f) {
-    fractalData[y + w / 2][x + w / 2] = f((
-        fractalData[y][x] +
-        fractalData[y + w][x] +
-        fractalData[y][x + w] +
-        fractalData[y + w][x + w]
-    ) / 4, s)
+// Kinda-sorta pink noise function
+function pinkNoiseFn(value, weight) {
+    /*
+     * At first, I implemented a "more accurate" pink noise function based on
+     * octaves, as described here: http://www.firstpr.com.au/dsp/pink-noise/
+     *
+     * The noise it generated looked too white. Probably because it's not meant
+     * to be generated with a diamond-square. In any case, using pure white
+     * noise is less code, and produces subkectively better results!
+     */
+    return Math.max(Math.min(value + (Math.random() - .5) * weight, 1), -1)
 }
 
-function subsquare(x, y, w, s, f) {
+
+// Half-weight function
+function halfWeightFn(weight) {
+    return weight / 2
+}
+
+
+function diamond(x, y, width, weight, permuteFn) {
+    fractalData[y + width / 2][x + width / 2] = permuteFn((
+        fractalData[y][x] +
+        fractalData[y + width][x] +
+        fractalData[y][x + width] +
+        fractalData[y + width][x + width]
+    ) / 4, weight)
+}
+
+function subsquare(x, y, width, weight, permuteFn) {
     fractalData[y][x] =
     fractalData[y % fractalSize][x % fractalSize] =
-    f((
-        fractalData[y][(x - w + fractalSize) % fractalSize] +
-        fractalData[(y - w + fractalSize) % fractalSize][x] +
-        fractalData[y][(x + w) % fractalSize] +
-        fractalData[(y + w) % fractalSize][x]
-    ) / 4, s)
+    permuteFn((
+        fractalData[y][(x - width + fractalSize) % fractalSize] +
+        fractalData[(y - width + fractalSize) % fractalSize][x] +
+        fractalData[y][(x + width) % fractalSize] +
+        fractalData[(y + width) % fractalSize][x]
+    ) / 4, weight)
 }
 
-function square(x, y, w, s, f) {
-    subsquare(x + w / 2, y, w / 2, s, f)
-    subsquare(x, y + w / 2, w / 2, s, f)
-    subsquare(x + w, y + w / 2, w / 2, s, f)
-    subsquare(x + w / 2, y + w, w / 2, s, f)
+function square(x, y, width, weight, permuteFn, nextWeightFn) {
+    subsquare(x + width / 2, y, width / 2, weight, permuteFn)
+    subsquare(x, y + width / 2, width / 2, weight, permuteFn)
+    subsquare(x + width, y + width / 2, width / 2, weight, permuteFn)
+    subsquare(x + width / 2, y + width, width / 2, weight, permuteFn)
 
     // Update fractal state
-    w /= 2
-    s /= 2
+    width /= 2
+    weight = nextWeightFn(weight)
 
     // Recurse
-    if (w > 1) {
+    if (width > 1) {
         // Perform diamond steps
-        diamond(x, y, w, s, f)
-        diamond(x + w, y, w, s, f)
-        diamond(x, y + w, w, s, f)
-        diamond(x + w, y + w, w, s, f)
+        diamond(x, y, width, weight, permuteFn)
+        diamond(x + width, y, width, weight, permuteFn)
+        diamond(x, y + width, width, weight, permuteFn)
+        diamond(x + width, y + width, width, weight, permuteFn)
 
-        // Push square steps onto a worker queue
-        fractalQueue.push([ x, y, w, s, f ])
-        fractalQueue.push([ x + w, y, w, s, f ])
-        fractalQueue.push([ x, y + w, w, s, f ])
-        fractalQueue.push([ x + w, y + w, w, s, f ])
+        // Push square stepweight onto a widthorker queue
+        fractalQueue.push([ x, y, width, weight, permuteFn, nextWeightFn ])
+        fractalQueue.push([ x + width, y, width, weight, permuteFn, nextWeightFn ])
+        fractalQueue.push([ x, y + width, width, weight, permuteFn, nextWeightFn ])
+        fractalQueue.push([ x + width, y + width, width, weight, permuteFn, nextWeightFn ])
     }
 }
 
-function fractal(corners, fn) {
+function fractal(corners, weight, permuteFn, nextWeightFn) {
     fractalData[0][0] =
         fractalData[0][fractalSize] =
         fractalData[fractalSize][0] =
         fractalData[fractalSize][fractalSize] = corners
 
-    diamond(0, 0, fractalSize, 2, fn) // Center
-    square(0, 0, fractalSize, 2, fn)
+    diamond(0, 0, fractalSize, weight, permuteFn) // Center
+    square(0, 0, fractalSize, weight, permuteFn, nextWeightFn)
 
     // Empty worker queue
     while (fractalQueue.length) {
