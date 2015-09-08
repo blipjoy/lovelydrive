@@ -33,6 +33,7 @@ function mat4Inverse(a, b) {
     // See: http://ksimek.github.io/2012/08/22/extrinsic/
 
     // Transpose
+    a.set(mat4Identity)
     a[ 0] = b[ 0]
     a[ 1] = b[ 4]
     a[ 2] = b[ 8]
@@ -44,9 +45,6 @@ function mat4Inverse(a, b) {
     a[ 8] = b[ 2]
     a[ 9] = b[ 6]
     a[10] = b[10]
-
-    a[ 3] = a[ 7] = a[11] = a[12] = a[13] = a[14] = 0
-    a[15] = 1
 
     // Inverse translation
     mat4Temp.set(mat4Identity)
