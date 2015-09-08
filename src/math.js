@@ -61,8 +61,8 @@ function mat4Translate(m, x, y, z) {
     m[13] += x * m[1] + y * m[5] + z * m[ 9]
     m[14] += x * m[2] + y * m[6] + z * m[10]
 }
-/*
-// XXX: uglify-js does not remove dead code, despite its claims...
+
+// XXX: <DEBUG> uglify-js does not remove dead code, despite its claims...
 function mat4RotateX(m, r) {
     // Rotate about X axis
     mat4Temp.set([
@@ -73,7 +73,8 @@ function mat4RotateX(m, r) {
     ])
     mat4Multiply(m, mat4Temp)
 }
-*/
+// XXX: </DEBUG>
+
 function mat4RotateY(m, r) {
     // Rotate about Y axis
     mat4Temp.set([
@@ -84,7 +85,8 @@ function mat4RotateY(m, r) {
     ])
     mat4Multiply(m, mat4Temp)
 }
-/*
+
+// XXX: <DEBUG> more dead code...
 function mat4RotateZ(m, r) {
     // Rotate about Z axis
     mat4Temp.set([
@@ -95,4 +97,4 @@ function mat4RotateZ(m, r) {
     ])
     mat4Multiply(m, mat4Temp)
 }
-*/
+// XXX: </DEBUG>
