@@ -8,15 +8,18 @@
 
 
 // Procedural texture generation
-var textureSize = 2048 // Real texture size is n^2
-var textureMapW = textureSize / 2 - 16 // Texture atlas constant
-var textureMapH = textureSize / 8 - 16 // Texture atlas constant
-var asphaltTextureSize = textureSize / 2
+
+// XXX: <DEBUG>
+const TEXTURE_SIZE = 2048 // Real texture size is n^2
+const TEXTURE_MAPW = TEXTURE_SIZE / 2 - 16 // Texture atlas constant
+const TEXTURE_MAPH = TEXTURE_SIZE / 8 - 16 // Texture atlas constant
+const ASPHALT_TEXTURE_SIZE = TEXTURE_SIZE / 2
+// XXX: </DEBUG>
 
 
 var ctx = document.createElement("canvas").getContext("2d")
-ctx.canvas.width = ctx.canvas.height = textureSize
-var img = ctx.createImageData(textureMapW, textureMapW)
+ctx.canvas.width = ctx.canvas.height = TEXTURE_SIZE
+var img = ctx.createImageData(TEXTURE_MAPW, TEXTURE_MAPW)
 
 
 // Upload a white 1x1 texture for drawing solid-color quads
@@ -50,11 +53,11 @@ for (var i = 0; i < 2; i++) {
 
     // RENDER CLOUDS
     tmp = 0
-    for (var y = 0; y < textureMapW; y++) {
-        for (var x = 0; x < textureMapW; x++) {
+    for (var y = 0; y < TEXTURE_MAPW; y++) {
+        for (var x = 0; x < TEXTURE_MAPW; x++) {
             // Interpolate between each node
-            var sx = x / textureMapW * fractalSize,
-                sy = y / textureMapW * fractalSize,
+            var sx = x / TEXTURE_MAPW * fractalSize,
+                sy = y / TEXTURE_MAPW * fractalSize,
 
                 p1 = fractalData[~~sy][~~sx],
                 p2 = fractalData[~~sy][~~sx + 1],
@@ -76,10 +79,10 @@ for (var i = 0; i < 2; i++) {
 
     // Duplicate pixels on the horizontal edges to fix texture seams when tiled
     for (var x = 4; x < 8; x++) {
-        ctx.putImageData(img, textureMapW + 16 + x, (textureMapW + 16) * i + 8)
+        ctx.putImageData(img, TEXTURE_MAPW + 16 + x, (TEXTURE_MAPW + 16) * i + 8)
     }
     for (var x = 12; x >= 8; x--) {
-        ctx.putImageData(img, textureMapW + 16 + x, (textureMapW + 16) * i + 8)
+        ctx.putImageData(img, TEXTURE_MAPW + 16 + x, (TEXTURE_MAPW + 16) * i + 8)
     }
 }
 
@@ -127,30 +130,30 @@ for (var i = 0; i < 8; i++) {
             ~~(((16 - y) / 16 * .125 + .875) * 255) + "," +
             "255)"
 
-        ctx.moveTo(-4, textureMapH + 4)
+        ctx.moveTo(-4, TEXTURE_MAPH + 4)
         ctx.lineTo(-4,
             (
                 1 - (fractalData[y + i * 16][0] * ((8 - i) / 16 + .5) * .8 + .2)
-            ) * textureMapH + y / 16 * .2 * textureMapH
+            ) * TEXTURE_MAPH + y / 16 * .2 * TEXTURE_MAPH
         )
 
         for (var x = 0; x <= fractalSize; x++) {
-            ctx.lineTo(x / fractalSize * textureMapW,
+            ctx.lineTo(x / fractalSize * TEXTURE_MAPW,
                 (
                     1 - (fractalData[y + i * 16][x] * ((8 - i) / 16 + .5) * .8 + .2)
-                ) * textureMapH + y / 16 * .2 * textureMapH
+                ) * TEXTURE_MAPH + y / 16 * .2 * TEXTURE_MAPH
             )
         }
 
-        ctx.lineTo(textureMapW + 4,
+        ctx.lineTo(TEXTURE_MAPW + 4,
             (
                 1 - (fractalData[y + i * 16][0] * ((8 - i) / 16 + .5) * .8 + .2)
-            ) * textureMapH + y / 16 * .2 * textureMapH
+            ) * TEXTURE_MAPH + y / 16 * .2 * TEXTURE_MAPH
         )
-        ctx.lineTo(textureMapW + 4, textureMapH + 4)
+        ctx.lineTo(TEXTURE_MAPW + 4, TEXTURE_MAPH + 4)
         ctx.fill()
     }
-    ctx.translate(0, textureMapH + 16)
+    ctx.translate(0, TEXTURE_MAPH + 16)
 }
 ctx.restore()
 
@@ -173,7 +176,7 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 // RENDER ASPHALT
 
 // Clear destination texture
-ctx.canvas.width = ctx.canvas.height = textureSize
+ctx.canvas.width = ctx.canvas.height = TEXTURE_SIZE
 
 // Reuse cloud texture data ;)
 ctx.putImageData(img, 0, 0)
@@ -181,15 +184,15 @@ ctx.putImageData(img, 0, 0)
 // Scale the cloud texture to fit
 ctx.save()
 ctx.globalCompositeOperation = "copy"
-ctx.drawImage(ctx.canvas, 0, 0, textureMapW, textureMapW, 0, 0, asphaltTextureSize, asphaltTextureSize)
+ctx.drawImage(ctx.canvas, 0, 0, TEXTURE_MAPW, TEXTURE_MAPW, 0, 0, ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
 ctx.restore()
 
 // Get the scaled image data
-img = ctx.getImageData(0, 0, asphaltTextureSize, asphaltTextureSize)
+img = ctx.getImageData(0, 0, ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
 
 tmp = 0
-for (var y = 0; y < asphaltTextureSize; y++) {
-    for (var x = 0; x < asphaltTextureSize; x++) {
+for (var y = 0; y < ASPHALT_TEXTURE_SIZE; y++) {
+    for (var x = 0; x < ASPHALT_TEXTURE_SIZE; x++) {
         // Mix alpha channel with white noise, and limit to [104..152]
         var gray = Math.min(Math.max((img.data[tmp + 3] / (16 / 3) + 104) * (Math.random() * 2 - 1), 0), 255)
 
@@ -197,7 +200,7 @@ for (var y = 0; y < asphaltTextureSize; y++) {
         if (y) {
             gray = (
                 gray + img.data[tmp - 4] +
-                img.data[tmp - asphaltTextureSize * 4]
+                img.data[tmp - ASPHALT_TEXTURE_SIZE * 4]
             ) / 3
         }
 
@@ -210,11 +213,11 @@ for (var y = 0; y < asphaltTextureSize; y++) {
 }
 
 tmp = 0
-for (var x = 0; x < asphaltTextureSize; x++) {
+for (var x = 0; x < ASPHALT_TEXTURE_SIZE; x++) {
     // Blur the top line after the bottom line
     gray = (
-        img.data[tmp] + img.data[(tmp - 4) & (asphaltTextureSize - 1)] +
-        img.data[(tmp - asphaltTextureSize * 4) & (asphaltTextureSize * asphaltTextureSize - 1)]
+        img.data[tmp] + img.data[(tmp - 4) & (ASPHALT_TEXTURE_SIZE - 1)] +
+        img.data[(tmp - ASPHALT_TEXTURE_SIZE * 4) & (ASPHALT_TEXTURE_SIZE * ASPHALT_TEXTURE_SIZE - 1)]
     ) / 3
 
     img.data[tmp++] = img.data[tmp++] = img.data[tmp++] = gray
@@ -222,14 +225,14 @@ for (var x = 0; x < asphaltTextureSize; x++) {
 }
 
 tmp = 0
-for (var y = 0; y < asphaltTextureSize; y++) {
-    for (var x = 0; x < asphaltTextureSize; x++) {
+for (var y = 0; y < ASPHALT_TEXTURE_SIZE; y++) {
+    for (var x = 0; x < ASPHALT_TEXTURE_SIZE; x++) {
         gray = img.data[tmp]
 
         // Add some fake emboss
         if (
-            (img.data[(tmp - 4) & (asphaltTextureSize - 1)] < 64) ||
-            (img.data[(tmp - asphaltTextureSize * 4) & (asphaltTextureSize - 1)] < 64)
+            (img.data[(tmp - 4) & (ASPHALT_TEXTURE_SIZE - 1)] < 64) ||
+            (img.data[(tmp - ASPHALT_TEXTURE_SIZE * 4) & (ASPHALT_TEXTURE_SIZE - 1)] < 64)
         ) {
             gray += 64
         }
@@ -242,32 +245,28 @@ for (var y = 0; y < asphaltTextureSize; y++) {
 }
 
 ctx.putImageData(img, 0, 0)
-ctx.putImageData(img, asphaltTextureSize, 0)
-ctx.putImageData(img, 0, asphaltTextureSize)
-ctx.putImageData(img, asphaltTextureSize, asphaltTextureSize)
+ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, 0)
+ctx.putImageData(img, 0, ASPHALT_TEXTURE_SIZE)
+ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
 
 function stripes(u, v) {
     // Get the center vertical strip of asphalt texture
-<<<<<<< Updated upstream
-    img = ctx.getImageData(u + asphaltTextureSize / 2 - 30, v, 60, asphaltTextureSize)
-=======
     img = ctx.getImageData(ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v, 60, ASPHALT_TEXTURE_SIZE)
->>>>>>> Stashed changes
 
     tmp = 0
-    for (var y = 0; y < asphaltTextureSize; y++) {
+    for (var y = 0; y < ASPHALT_TEXTURE_SIZE; y++) {
         for (var x = 0; x < 60; x++) {
             gray = img.data[tmp]
 
             // Yellow lines
             if (
                 (gray > 20 && (
-                    (x > 2 && x < 20 && (u || v || y < asphaltTextureSize / 2)) ||
-                    (x > 40 && x < 58 && (!u || v || y < asphaltTextureSize / 2))
+                    (x > 2 && x < 20 && (u || v || y < ASPHALT_TEXTURE_SIZE / 2)) ||
+                    (x > 40 && x < 58 && (!u || v || y < ASPHALT_TEXTURE_SIZE / 2))
                 )) ||
                 (gray > 28 && (
-                    (x < 22 && (u || v || y < asphaltTextureSize / 2)) ||
-                    (x > 38 && (!u || v || y < asphaltTextureSize / 2))
+                    (x < 22 && (u || v || y < ASPHALT_TEXTURE_SIZE / 2)) ||
+                    (x > 38 && (!u || v || y < ASPHALT_TEXTURE_SIZE / 2))
                 ))
             ) {
                 gray = gray / 55 + .2
@@ -284,17 +283,13 @@ function stripes(u, v) {
         }
     }
 
-<<<<<<< Updated upstream
-    ctx.putImageData(img, u + asphaltTextureSize / 2 - 30, v)
-=======
     ctx.putImageData(img, ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v)
->>>>>>> Stashed changes
 }
 
 stripes(0, 0)
-stripes(0, asphaltTextureSize)
-stripes(asphaltTextureSize, 0)
-stripes(asphaltTextureSize, asphaltTextureSize)
+stripes(0, ASPHALT_TEXTURE_SIZE)
+stripes(ASPHALT_TEXTURE_SIZE, 0)
+stripes(ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
 
 
 // Upload the asphalt texture to the GPU

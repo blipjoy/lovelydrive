@@ -63,6 +63,10 @@ module.exports = function(grunt) {
           variables: {
             "document.body.children[1].innerHTML": "\"<%= grunt.file.read('build/glsl/vertex.glsl') %>\"",
             "document.body.children[2].innerHTML": "\"<%= grunt.file.read('build/glsl/fragment.glsl') %>\"",
+            "TEXTURE_SIZE": 2048,
+            "TEXTURE_MAPW": 2048 / 2 - 16,
+            "TEXTURE_MAPH": 2048 / 8 - 16,
+            "ASPHALT_TEXTURE_SIZE": 2048 / 2,
             "gl.ONE": 1,
             "gl.TRIANGLES": 4,
             "gl.SRC_ALPHA": 770,

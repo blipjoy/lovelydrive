@@ -48,7 +48,7 @@ function mountainVertices(layer) {
     }
 
     // Texture coordinates
-    var x1 = 8 / textureSize,
+    var x1 = 8 / TEXTURE_SIZE,
         x2 = .5 - x1,
         y1 = 1 / 8 * layer + x1,
         y2 = 1 / 8 * (layer + 1) - x1,
@@ -91,9 +91,9 @@ function cloudVertices(layer) {
         ]
     }
 
-    var x1 = .5 + 8 / textureSize,
-        x2 = 1 - 8 / textureSize,
-        y1 = layer / 4 + 8 / textureSize,
+    var x1 = .5 + 8 / TEXTURE_SIZE,
+        x2 = 1 - 8 / TEXTURE_SIZE,
+        y1 = layer / 4 + 8 / TEXTURE_SIZE,
         y2 = y1 + .25,
         z = layer * 8 - cloudScale,
         // Sunset
