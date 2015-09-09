@@ -124,7 +124,6 @@ function roadVertices(i) {
 
     function quad(z) {
         var a = (z - i + 1) / 28, // FIXME: a1 and a2 to produce a smooth gradiant
-            g = .2 * a, // Grayscale value
 
             // Compute a rotation angle from the next fractal node
             turn = fractalData[~~(z / fractalSize) % fractalSize][z % fractalSize] * Math.PI / 4,
@@ -183,12 +182,13 @@ function roadVertices(i) {
         mat4Translate(roadPosition, -2, 0, 0)
 
         return [
-            g, g, g, a, 0, 0, x1, -1, z1, 0, // Upper Left corner
-            g, g, g, a, 0, 0, x2, -1, z2, 0, // Upper right corner
-            g, g, g, a, 0, 0, x3, -1, z3, 0, // Lower left corner
-            g, g, g, a, 0, 0, x3, -1, z3, 0, // Lower left corner
-            g, g, g, a, 0, 0, x2, -1, z2, 0, // Upper right corner
-            g, g, g, a, 0, 0, x4, -1, z4, 0, // Lower right corner
+            // FIXME: Texture coordinates are not correct
+            a, a, a, a,  0,   0, x1, -1, z1, 2, // Upper Left corner
+            a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
+            a, a, a, a,  0, 1/8, x3, -1, z3, 2, // Lower left corner
+            a, a, a, a,  0, 1/8, x3, -1, z3, 2, // Lower left corner
+            a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
+            a, a, a, a, .5, 1/8, x4, -1, z4, 2, // Lower right corner
         ]
     }
 

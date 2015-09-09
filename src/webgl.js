@@ -61,6 +61,19 @@ gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, 1)
 
 
+// XXX: <DEBUG>
+// Chrome supports this extension, but does not include the defines
+if (!("TEXTURE_MAX_ANISOTROPY_EXT" in gl)) {
+    gl.TEXTURE_MAX_ANISOTROPY_EXT = 34046
+    gl.MAX_TEXTURE_MAX_ANISOTROPY_EXT = 34047
+}
+// XXX: </DEBUG>
+
+// Enable Anisotropic filtering
+var anisotropic = gl.getExtension("EXT_texture_filter_anisotropic") ?
+    gl.getParameter(gl.MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0
+
+
 // Initialize attribute variables
 gl.vertexAttribPointer(
     gl.getAttribLocation(handle, "x"),
@@ -99,7 +112,7 @@ gl.enableVertexAttribArray(3)
 var projectionMatrixPointer =   gl.getUniformLocation(handle, "p")
 var viewMatrixPointer =         gl.getUniformLocation(handle, "m")
 
-gl.uniform1iv(gl.getUniformLocation(handle, "s"), [ 0, 1 ])
+gl.uniform1iv(gl.getUniformLocation(handle, "s"), [ 0, 1, 2 ])
 var viewMatrix = new Float32Array(mat4Identity)
 
 

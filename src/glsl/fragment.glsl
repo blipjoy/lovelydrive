@@ -1,6 +1,6 @@
 precision highp float;
 
-uniform sampler2D s[2]; // Texture Sampler2D
+uniform sampler2D s[3]; // Texture Sampler2D
 
 varying vec4 i; // Interpolation Color
 varying vec2 t; // Texture coordinates
@@ -11,7 +11,10 @@ void main(void) {
     if (y == 0.0) {
         gl_FragColor = texture2D(s[0], t) * i;
     }
-    else {
+    else if (y == 1.0) {
         gl_FragColor = texture2D(s[1], t) * i;
+    }
+    else {
+        gl_FragColor = texture2D(s[2], t) * i;
     }
 }

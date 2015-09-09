@@ -3,6 +3,7 @@
  *
  * 0: White 1x1 (for gradients, etc.)
  * 1: Clouds and mountains
+ * 2: Asphalt
  */
 
 
@@ -10,6 +11,8 @@
 var textureSize = 2048 // Real texture size is n^2
 var textureMapW = textureSize / 2 - 16 // Texture atlas constant
 var textureMapH = textureSize / 8 - 16 // Texture atlas constant
+var asphaltTextureSize = textureSize / 2
+
 
 var ctx = document.createElement("canvas").getContext("2d")
 ctx.canvas.width = ctx.canvas.height = textureSize
@@ -111,6 +114,7 @@ for (var i = 0; i < 2; i++) {
 fractal(.5, 2, heightMapFn, halfWeightFn)
 
 // RENDER MOUNTAINS
+ctx.save()
 ctx.translate(8, 8)
 for (var i = 0; i < 8; i++) {
     for (var y = 0; y < 16; y++) {
@@ -148,6 +152,7 @@ for (var i = 0; i < 8; i++) {
     }
     ctx.translate(0, textureMapH + 16)
 }
+ctx.restore()
 
 
 // Upload the mountains/clouds texture to the GPU
@@ -163,3 +168,150 @@ gl.texImage2D(
 
 // Disable mipmap on the background texture (not needed, and causes texture seams)
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+
+
+// RENDER ASPHALT
+
+// Clear destination texture
+ctx.canvas.width = ctx.canvas.height = textureSize
+
+// Reuse cloud texture data ;)
+ctx.putImageData(img, 0, 0)
+
+// Scale the cloud texture to fit
+ctx.save()
+ctx.globalCompositeOperation = "copy"
+ctx.drawImage(ctx.canvas, 0, 0, textureMapW, textureMapW, 0, 0, asphaltTextureSize, asphaltTextureSize)
+ctx.restore()
+
+// Get the scaled image data
+img = ctx.getImageData(0, 0, asphaltTextureSize, asphaltTextureSize)
+
+tmp = 0
+for (var y = 0; y < asphaltTextureSize; y++) {
+    for (var x = 0; x < asphaltTextureSize; x++) {
+        // Mix alpha channel with white noise, and limit to [104..152]
+        var gray = Math.min(Math.max((img.data[tmp + 3] / (16 / 3) + 104) * (Math.random() * 2 - 1), 0), 255)
+
+        // Add some fake blur
+        if (y) {
+            gray = (
+                gray + img.data[tmp - 4] +
+                img.data[tmp - asphaltTextureSize * 4]
+            ) / 3
+        }
+
+        // Grayscale
+        img.data[tmp++] = img.data[tmp++] = img.data[tmp++] = gray
+
+        // Full alpha
+        img.data[tmp++] = 255
+    }
+}
+
+tmp = 0
+for (var x = 0; x < asphaltTextureSize; x++) {
+    // Blur the top line after the bottom line
+    gray = (
+        img.data[tmp] + img.data[(tmp - 4) & (asphaltTextureSize - 1)] +
+        img.data[(tmp - asphaltTextureSize * 4) & (asphaltTextureSize * asphaltTextureSize - 1)]
+    ) / 3
+
+    img.data[tmp++] = img.data[tmp++] = img.data[tmp++] = gray
+    tmp++
+}
+
+tmp = 0
+for (var y = 0; y < asphaltTextureSize; y++) {
+    for (var x = 0; x < asphaltTextureSize; x++) {
+        gray = img.data[tmp]
+
+        // Add some fake emboss
+        if (
+            (img.data[(tmp - 4) & (asphaltTextureSize - 1)] < 64) ||
+            (img.data[(tmp - asphaltTextureSize * 4) & (asphaltTextureSize - 1)] < 64)
+        ) {
+            gray += 64
+        }
+
+        // Desaturate
+        img.data[tmp++] = img.data[tmp++] = img.data[tmp++] = gray / 4
+
+        tmp++
+    }
+}
+
+ctx.putImageData(img, 0, 0)
+ctx.putImageData(img, asphaltTextureSize, 0)
+ctx.putImageData(img, 0, asphaltTextureSize)
+ctx.putImageData(img, asphaltTextureSize, asphaltTextureSize)
+
+function stripes(u, v) {
+    // Get the center vertical strip of asphalt texture
+<<<<<<< Updated upstream
+    img = ctx.getImageData(u + asphaltTextureSize / 2 - 30, v, 60, asphaltTextureSize)
+=======
+    img = ctx.getImageData(ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v, 60, ASPHALT_TEXTURE_SIZE)
+>>>>>>> Stashed changes
+
+    tmp = 0
+    for (var y = 0; y < asphaltTextureSize; y++) {
+        for (var x = 0; x < 60; x++) {
+            gray = img.data[tmp]
+
+            // Yellow lines
+            if (
+                (gray > 20 && (
+                    (x > 2 && x < 20 && (u || v || y < asphaltTextureSize / 2)) ||
+                    (x > 40 && x < 58 && (!u || v || y < asphaltTextureSize / 2))
+                )) ||
+                (gray > 28 && (
+                    (x < 22 && (u || v || y < asphaltTextureSize / 2)) ||
+                    (x > 38 && (!u || v || y < asphaltTextureSize / 2))
+                ))
+            ) {
+                gray = gray / 55 + .2
+
+                img.data[tmp++] = 230 * gray + Math.random() * 20
+                img.data[tmp++] = 183 * gray + Math.random() * 5
+                img.data[tmp++] = 22 * gray + Math.random() * 5
+
+                tmp++
+            }
+            else {
+                tmp += 4
+            }
+        }
+    }
+
+<<<<<<< Updated upstream
+    ctx.putImageData(img, u + asphaltTextureSize / 2 - 30, v)
+=======
+    ctx.putImageData(img, ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v)
+>>>>>>> Stashed changes
+}
+
+stripes(0, 0)
+stripes(0, asphaltTextureSize)
+stripes(asphaltTextureSize, 0)
+stripes(asphaltTextureSize, asphaltTextureSize)
+
+
+// Upload the asphalt texture to the GPU
+gl.activeTexture(gl.TEXTURE2)
+gl.texImage2D(
+    gl.TEXTURE_2D,
+    gl.bindTexture(gl.TEXTURE_2D, gl.createTexture()),
+    gl.RGBA,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    ctx.canvas
+)
+
+// We want a mipmap for asphalt
+gl.generateMipmap(gl.TEXTURE_2D)
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+
+if (anisotropic) {
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAX_ANISOTROPY_EXT, anisotropic)
+}
