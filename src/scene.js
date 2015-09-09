@@ -165,10 +165,18 @@ function roadVertices(i) {
         angle += turn
 
         // xz1 and xz2 are copied from the previous xz3 and xz4
-        x1 = x3
-        z1 = z3
-        x2 = x4
-        z2 = z4
+        if (navigator.userAgent.indexOf("Firefox/") > 0) {
+            x1 = + "" + x3
+            z1 = + "" + z3
+            x2 = + "" + x4
+            z2 = + "" + z4
+        }
+        else {
+            x1 = x3
+            z1 = z3
+            x2 = x4
+            z2 = z4
+        }
 
         // Rotate the pivot point
         mat4RotateY(roadPosition, turn)
