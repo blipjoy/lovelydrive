@@ -116,14 +116,15 @@ function roadVertices(i) {
     // Road state
     var x1, z1,
         x2, z2,
-        x3 = -2,
-        x4 = 2,
+        x3 = -3,
+        x4 = 3,
         z3 = z4 = 0,
         angle = 0,
         step = 0
 
     function quad(z) {
-        var a = (z - i + 1) / 28, // FIXME: a1 and a2 to produce a smooth gradiant
+        var a = (z - i + 1) / 28,
+            b = (z - i + 2) / 28,
 
             // Compute a rotation angle from the next fractal node
             turn = fractalData[~~(z / fractalSize) % fractalSize][z % fractalSize] * Math.PI / 4,
@@ -173,22 +174,22 @@ function roadVertices(i) {
         mat4RotateY(roadPosition, turn)
 
         // Get the next xz3 and xz4
-        mat4Translate(roadPosition, -2, 0, 1)
+        mat4Translate(roadPosition, -3, 0, 1)
         x3 = roadPosition[12]
         z3 = roadPosition[14]
-        mat4Translate(roadPosition, 4, 0, 0)
+        mat4Translate(roadPosition, 6, 0, 0)
         x4 = roadPosition[12]
         z4 = roadPosition[14]
-        mat4Translate(roadPosition, -2, 0, 0)
+        mat4Translate(roadPosition, -3, 0, 0)
 
         return [
             // FIXME: Texture coordinates are not correct
             a, a, a, a,  0,   0, x1, -1, z1, 2, // Upper Left corner
             a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
-            a, a, a, a,  0, 1/8, x3, -1, z3, 2, // Lower left corner
-            a, a, a, a,  0, 1/8, x3, -1, z3, 2, // Lower left corner
+            b, b, b, b,  0, 1/8, x3, -1, z3, 2, // Lower left corner
+            b, b, b, b,  0, 1/8, x3, -1, z3, 2, // Lower left corner
             a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
-            a, a, a, a, .5, 1/8, x4, -1, z4, 2, // Lower right corner
+            b, b, b, b, .5, 1/8, x4, -1, z4, 2, // Lower right corner
         ]
     }
 
@@ -241,4 +242,4 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
     .concat(mountainVertices(7))
 
     .concat(roadVertices(0))
-), gl.STATIC_DRAW)
+), gl.DYNAMIC_DRAW)

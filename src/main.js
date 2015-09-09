@@ -33,7 +33,7 @@ function raf() {
         roadPosition.set(mat4Identity)
         gl.bufferSubData(gl.ARRAY_BUFFER, (6 + 4 * 3 * 6 + 8 * 6 * 6) * 40, new Float32Array(roadVertices(~~(anim / 10))))
         mat4Inverse(camera, roadPosition)
-        mat4Translate(camera, 0, 0, -1)
+        mat4Translate(camera, -1, 0, 0)
     }
     anim++
 

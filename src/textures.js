@@ -249,7 +249,7 @@ ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, 0)
 ctx.putImageData(img, 0, ASPHALT_TEXTURE_SIZE)
 ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
 
-function stripes(u, v) {
+function yellowStripes(u, v) {
     // Get the center vertical strip of asphalt texture
     img = ctx.getImageData(ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v, 60, ASPHALT_TEXTURE_SIZE)
 
@@ -286,10 +286,48 @@ function stripes(u, v) {
     ctx.putImageData(img, ASPHALT_TEXTURE_SIZE / 2 - 30 + u, v)
 }
 
-stripes(0, 0)
-stripes(0, ASPHALT_TEXTURE_SIZE)
-stripes(ASPHALT_TEXTURE_SIZE, 0)
-stripes(ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
+yellowStripes(0, 0)
+yellowStripes(0, ASPHALT_TEXTURE_SIZE)
+yellowStripes(ASPHALT_TEXTURE_SIZE, 0)
+yellowStripes(ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
+
+function whiteStripes(u) {
+    // Get the center vertical strip of asphalt texture
+    img = ctx.getImageData(u, 0, 22, ASPHALT_TEXTURE_SIZE * 2)
+
+    tmp = 0
+    for (var y = 0; y < ASPHALT_TEXTURE_SIZE * 2; y++) {
+        for (var x = 0; x < 22; x++) {
+            gray = img.data[tmp]
+
+            // White lines
+            if (
+                (gray > 20 && (x > 2 && x < 20)) ||
+                (gray > 28 && (x < 22))
+            ) {
+                gray = gray / 55 + .2
+
+                var random = Math.random() * 20
+
+                img.data[tmp++] = 200 * gray + random
+                img.data[tmp++] = 200 * gray + random
+                img.data[tmp++] = 200 * gray + random
+
+                tmp++
+            }
+            else {
+                tmp += 4
+            }
+        }
+    }
+
+    ctx.putImageData(img, u, 0)
+}
+
+whiteStripes(20)
+whiteStripes(ASPHALT_TEXTURE_SIZE - 22 - 20)
+whiteStripes(ASPHALT_TEXTURE_SIZE + 20)
+whiteStripes(ASPHALT_TEXTURE_SIZE * 2 - 22 - 20)
 
 
 // Upload the asphalt texture to the GPU
