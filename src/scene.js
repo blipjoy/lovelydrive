@@ -123,8 +123,8 @@ function roadVertices(i) {
         step = 0
 
     function quad(z) {
-        var a = (z - i + 1) / 28,
-            b = (z - i + 2) / 28,
+        var a = (z - i) / 28,
+            b = (z - i + 1) / 28,
 
             // Compute a rotation angle from the next fractal node
             turn = fractalData[~~(z / fractalSize) % fractalSize][z % fractalSize] * Math.PI / 4,
