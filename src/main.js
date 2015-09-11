@@ -10,6 +10,7 @@ const ANIM_FRAMES = 10
 function raf() {
     // Responsive canvas sizing
     resize_canvas()
+    gl.clear(gl.COLOR_BUFFER_BIT)
 
 
     // Draw linear gradient for background
