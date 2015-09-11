@@ -1,12 +1,15 @@
 
 var camera = new Float32Array(16),
+    cameraTemp = new Float32Array(mat4Identity),
+    mountainScroll = 0,
     anim = 0
+
+const ANIM_FRAMES = 10
 
 // Render loop
 function raf() {
     // Responsive canvas sizing
     resize_canvas()
-    gl.clear(gl.COLOR_BUFFER_BIT)
 
 
     // Draw linear gradient for background
@@ -16,25 +19,32 @@ function raf() {
 
 
     // Draw clouds
-    viewMatrix[12] = Date.now() / -250 % (cloudScale * 4)
+    viewMatrix[12] = Date.now() / -250 % (CLOUD_SCALE * 4)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
     gl.drawArrays(gl.TRIANGLES, 6, 4 * 3 * 6) // 4 layers * 3 quads * 6 vertices
 
 
     // Draw mountains
-    viewMatrix[12] = Date.now() / -500 % (mountainScale * 6)
+    mountainScroll += roadAngle
+    viewMatrix[12] = mountainScroll % (MOUNTAIN_SCALE * 6)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
     gl.drawArrays(gl.TRIANGLES, 6 + 4 * 3 * 6, 8 * 6 * 6) // 8 layers * 6 quads * 6 vertices
 
 
 
     // FIXME: Animate ground
-    if (!(anim % 10)) {
-        roadPosition.set(mat4Identity)
-        gl.bufferSubData(gl.ARRAY_BUFFER, (6 + 4 * 3 * 6 + 8 * 6 * 6) * 40, new Float32Array(roadVertices(~~(anim / 10))))
-        mat4Inverse(camera, roadPosition)
-        mat4Translate(camera, -1, 0, 0)
+    if (!(anim % ANIM_FRAMES)) {
+        shiftRoadSegments()
     }
+
+    // Tween the camera
+    var t = anim % ANIM_FRAMES / ANIM_FRAMES
+    camera.set(mat4Identity)
+    mat4RotateY(camera, -roadAngle * t)
+    mat4Translate(camera, -1, 0, -t)
+    mat4Inverse(cameraTemp, roadPosition)
+    mat4Multiply(camera, cameraTemp)
+
     anim++
 
 

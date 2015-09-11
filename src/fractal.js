@@ -1,8 +1,8 @@
 // Fractal state
-var fractalSize = 128 // Real fractal size is n^2+1 to handle wrapping
+var FRACTAL_SIZE = 128 // Real fractal size is n^2+1 to handle wrapping
 
 var fractalData = []
-for (var y = 0; y <= fractalSize; y++) {
+for (var y = 0; y <= FRACTAL_SIZE; y++) {
     fractalData[y] = []
 }
 
@@ -46,12 +46,12 @@ function diamond(x, y, width, weight, permuteFn) {
 
 function subsquare(x, y, width, weight, permuteFn) {
     fractalData[y][x] =
-    fractalData[y % fractalSize][x % fractalSize] =
+    fractalData[y % FRACTAL_SIZE][x % FRACTAL_SIZE] =
     permuteFn((
-        fractalData[y][(x - width + fractalSize) % fractalSize] +
-        fractalData[(y - width + fractalSize) % fractalSize][x] +
-        fractalData[y][(x + width) % fractalSize] +
-        fractalData[(y + width) % fractalSize][x]
+        fractalData[y][(x - width + FRACTAL_SIZE) % FRACTAL_SIZE] +
+        fractalData[(y - width + FRACTAL_SIZE) % FRACTAL_SIZE][x] +
+        fractalData[y][(x + width) % FRACTAL_SIZE] +
+        fractalData[(y + width) % FRACTAL_SIZE][x]
     ) / 4, weight)
 }
 
@@ -83,12 +83,12 @@ function square(x, y, width, weight, permuteFn, nextWeightFn) {
 
 function fractal(corners, weight, permuteFn, nextWeightFn) {
     fractalData[0][0] =
-        fractalData[0][fractalSize] =
-        fractalData[fractalSize][0] =
-        fractalData[fractalSize][fractalSize] = corners
+        fractalData[0][FRACTAL_SIZE] =
+        fractalData[FRACTAL_SIZE][0] =
+        fractalData[FRACTAL_SIZE][FRACTAL_SIZE] = corners
 
-    diamond(0, 0, fractalSize, weight, permuteFn) // Center
-    square(0, 0, fractalSize, weight, permuteFn, nextWeightFn)
+    diamond(0, 0, FRACTAL_SIZE, weight, permuteFn) // Center
+    square(0, 0, FRACTAL_SIZE, weight, permuteFn, nextWeightFn)
 
     // Empty worker queue
     while (fractalQueue.length) {

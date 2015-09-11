@@ -56,8 +56,8 @@ for (var i = 0; i < 2; i++) {
     for (var y = 0; y < TEXTURE_MAPW; y++) {
         for (var x = 0; x < TEXTURE_MAPW; x++) {
             // Interpolate between each node
-            var sx = x / TEXTURE_MAPW * fractalSize,
-                sy = y / TEXTURE_MAPW * fractalSize,
+            var sx = x / TEXTURE_MAPW * FRACTAL_SIZE,
+                sy = y / TEXTURE_MAPW * FRACTAL_SIZE,
 
                 p1 = fractalData[~~sy][~~sx],
                 p2 = fractalData[~~sy][~~sx + 1],
@@ -137,8 +137,8 @@ for (var i = 0; i < 8; i++) {
             ) * TEXTURE_MAPH + y / 16 * .2 * TEXTURE_MAPH
         )
 
-        for (var x = 0; x <= fractalSize; x++) {
-            ctx.lineTo(x / fractalSize * TEXTURE_MAPW,
+        for (var x = 0; x <= FRACTAL_SIZE; x++) {
+            ctx.lineTo(x / FRACTAL_SIZE * TEXTURE_MAPW,
                 (
                     1 - (fractalData[y + i * 16][x] * ((8 - i) / 16 + .5) * .8 + .2)
                 ) * TEXTURE_MAPH + y / 16 * .2 * TEXTURE_MAPH

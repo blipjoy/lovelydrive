@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
+          "src/polyfill.js",
           "src/math.js",
           "src/webgl.js",
           "src/fractal.js",

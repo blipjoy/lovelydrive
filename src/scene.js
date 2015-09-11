@@ -30,20 +30,23 @@
  * to about 2.4:1 when scaling by 20 units.
  */
 
-var mountainScale = 20 // I don't know why! :) Maybe because science!
-var cloudScale = 52 // Same as depth!
+const MOUNTAIN_SCALE = 20 // I don't know why! :) Maybe because science!
+const CLOUD_SCALE = 52 // Same as depth!
+const FIREFOX = navigator.userAgent.indexOf("Firefox/") > 0
+const ROAD_SEGMENTS = 28
+
 
 // Generate vertex attributes for mountain layers
 function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            r, g, b, 1, x1, y1, (-3 + offset) * mountainScale, mountainScale - layer * 2 + 12, z, 1, // Upper left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * 2 + 12, z, 1, // Upper right corner
-            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * 2 + 12, z, 1, // Lower left corner
-            r, g, b, 1, x1, y2, (-3 + offset) * mountainScale,               - layer * 2 + 12, z, 1, // Lower left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * mountainScale, mountainScale - layer * 2 + 12, z, 1, // Upper right corner
-            r, g, b, 1, x2, y2, ( 3 + offset) * mountainScale,               - layer * 2 + 12, z, 1  // Lower right corner
+            r, g, b, 1, x1, y1, (-3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper right corner
+            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1, // Lower left corner
+            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1, // Lower left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper right corner
+            r, g, b, 1, x2, y2, ( 3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1  // Lower right corner
         ]
     }
 
@@ -67,12 +70,12 @@ function mountainVertices(layer) {
 
     // Quads
     return quad(-12).concat(quad(-6), quad(0), quad(6), quad(12), [
-        r, g, b, 1, x1, y2, -15 * mountainScale,                    - layer * 2 + 12, z, 1, // Upper left corner
-        r, g, b, 1, x1, y2,  15 * mountainScale,                    - layer * 2 + 12, z, 1, // Upper right corner
-        r, g, b, 1, x1, y2, -15 * mountainScale, 6 * -mountainScale - layer * 2 + 12, z, 1, // Lower left corner
-        r, g, b, 1, x1, y2, -15 * mountainScale, 6 * -mountainScale - layer * 2 + 12, z, 1, // Lower left corner
-        r, g, b, 1, x1, y2,  15 * mountainScale,                    - layer * 2 + 12, z, 1, // Upper right corner
-        r, g, b, 1, x1, y2,  15 * mountainScale, 6 * -mountainScale - layer * 2 + 12, z, 1  // Lower right corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper left corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper right corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Lower left corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Lower left corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper right corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1  // Lower right corner
     ])
 }
 
@@ -82,12 +85,12 @@ function cloudVertices(layer) {
     function quad(offset) {
         // Return a quad that is .5 units high and 4 units wide
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * cloudScale, cloudScale, z, 1, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, 1, // Upper right corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, 1, // Lower left corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * cloudScale,          0, z, 1, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * cloudScale, cloudScale, z, 1, // Upper right corner
-            0, 0, 0, 0, x2, y2, ( 2 + offset) * cloudScale,          0, z, 1  // Lower right corner
+            r, g, b, 1, x1, y1, (-2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper right corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, 1, // Lower left corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, 1, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper right corner
+            0, 0, 0, 0, x2, y2, ( 2 + offset) * CLOUD_SCALE,           0, z, 1  // Lower right corner
         ]
     }
 
@@ -95,7 +98,7 @@ function cloudVertices(layer) {
         x2 = 1 - 8 / TEXTURE_SIZE,
         y1 = layer / 4 + 8 / TEXTURE_SIZE,
         y2 = y1 + .25,
-        z = layer * 8 - cloudScale,
+        z = layer * 8 - CLOUD_SCALE,
         // Sunset
         r = [ 239, 102,  62, 221 ][layer] / 255,
         g = [ 137, 145,  22, 148 ][layer] / 255,
@@ -106,66 +109,35 @@ function cloudVertices(layer) {
 
 
 
-var roadPosition = new Float32Array(mat4Identity)
+var roadPosition = new Float32Array(mat4Identity),
+    nextRoadPosition = new Float32Array(mat4Identity),
+    roadGeometry = new Float32Array(28 * 6 * 10),
+    roadAngle = 0
 
 // Fractal pavement
 fractal(0, .2, pinkNoiseFn, eval) // eval is the identity function (saves 8 bytes)
 
-// Generate vertex attributes for road
-function roadVertices(i) {
+var nextRoadAngle = (function() {
+    // Road state
+    var z = 0
+
+    return function () {
+        // Compute a rotation angle from the next fractal node
+        return roadAngle = fractalData[~~(z / FRACTAL_SIZE) % FRACTAL_SIZE][z++ % FRACTAL_SIZE] * Math.PI / 8
+    }
+})()
+
+var nextRoadSegment = (function () {
     // Road state
     var x1, z1,
         x2, z2,
         x3 = -3,
         x4 = 3,
-        z3 = z4 = 0,
-        angle = 0,
-        step = 0
+        z3 = z4 = 0
 
-    function quad(z) {
-        var a = (z - i) / 28,
-            b = (z - i + 1) / 28,
-
-            // Compute a rotation angle from the next fractal node
-            turn = fractalData[~~(z / fractalSize) % fractalSize][z % fractalSize] * Math.PI / 4,
-            state
-
-        /*
-         * This is a state machine which forces the road direction if the angle is
-         * greater than 45 degrees. The forcing persists for 10 segments, which can
-         * create winding/snaking roads. Very interesting driving!
-         *
-         * The default state is to let the noise navigate.
-         *
-         * The reason for the angle clamping is to prevent loops. We're guaranteed
-         * that the road always extends away from the origin (toward its original
-         * direction)
-         */
-        if (angle > Math.PI / 4) {
-            step = 0
-            state = 1
-        }
-        else if (angle < -Math.PI / 4) {
-            step = 0
-            state = 2
-        }
-        else if (step++ > 10) {
-            state = 0
-        }
-
-        // Apply a transform to the turn, based on state
-        if (state == 1) {
-            turn = -Math.abs(turn)
-        }
-        if (state == 2) {
-            turn = Math.abs(turn)
-        }
-
-        // Update the angle and create a new segment
-        angle += turn
-
+    return function () {
         // xz1 and xz2 are copied from the previous xz3 and xz4
-        if (navigator.userAgent.indexOf("Firefox/") > 0) {
+        if (FIREFOX) {
             x1 = + "" + x3
             z1 = + "" + z3
             x2 = + "" + x4
@@ -178,34 +150,101 @@ function roadVertices(i) {
             z2 = z4
         }
 
+        // Copy the last road position for the camera
+        roadPosition.set(nextRoadPosition)
+
         // Rotate the pivot point
-        mat4RotateY(roadPosition, turn)
+        mat4RotateY(nextRoadPosition, nextRoadAngle())
 
         // Get the next xz3 and xz4
-        mat4Translate(roadPosition, -3, 0, 1)
-        x3 = roadPosition[12]
-        z3 = roadPosition[14]
-        mat4Translate(roadPosition, 6, 0, 0)
-        x4 = roadPosition[12]
-        z4 = roadPosition[14]
-        mat4Translate(roadPosition, -3, 0, 0)
+        mat4Translate(nextRoadPosition, -3, 0, 1)
+        x3 = nextRoadPosition[12]
+        z3 = nextRoadPosition[14]
+        mat4Translate(nextRoadPosition, 6, 0, 0)
+        x4 = nextRoadPosition[12]
+        z4 = nextRoadPosition[14]
+        mat4Translate(nextRoadPosition, -3, 0, 0)
+
+        return [
+            [ x1, -1, z1 ], // Upper Left corner
+            [ x2, -1, z2 ], // Upper right corner
+            [ x3, -1, z3 ], // Lower left corner
+            [ x3, -1, z3 ], // Lower left corner
+            [ x2, -1, z2 ], // Upper right corner
+            [ x4, -1, z4 ]  // Lower right corner
+        ]
+    }
+})()
+
+// Updates the road geometry, then copies it to the WebGL Array Buffer
+function shiftRoadSegments() {
+    // Get a copy of the texture coordinates on the first segment
+    // These will be cycled to the last segment
+    var v = [
+        roadGeometry[5],
+        roadGeometry[15],
+        roadGeometry[25],
+        roadGeometry[35],
+        roadGeometry[45],
+        roadGeometry[55]
+    ]
+
+    // Shift all position vectors (and texture coordinates) to the previous segment
+    for (var i = 1; i < ROAD_SEGMENTS; i++) {
+        for (var j = 0; j < 6; j++) {
+            var n = (i - 1) * 6 * 10 + j * 10 + 5,
+                m = i * 6 * 10 + j * 10 + 5
+
+            roadGeometry.set(roadGeometry.slice(m, m + 4), n)
+        }
+    }
+
+    // FIXME: Update the alpha for each segment to properly blend while scrolling
+    // This will prevent a perceptable "flash" in the road
+
+    // Update the last segment
+    var segment = nextRoadSegment()
+    for (var i = 0; i < 6; i++) {
+        roadGeometry.set([ v[i] ].concat(segment[i]), (ROAD_SEGMENTS - 1) * 6 * 10 + i * 10 + 5)
+    }
+
+    // Copy the new road geometry to the WebGL Array Buffer
+    gl.bufferSubData(gl.ARRAY_BUFFER, (6 + 4 * 3 * 6 + 8 * 6 * 6) * 40, roadGeometry)
+}
+
+// Generate vertex attributes for road
+function roadVertices() {
+    function quad(z) {
+        var a = z / ROAD_SEGMENTS,
+            b = (z + 1) / ROAD_SEGMENTS,
+            v1 = z % 4 / 8,
+            v2 = v1 + 1 / 8
 
         return [
             // FIXME: Texture coordinates are not correct
-            a, a, a, a,  0,   0, x1, -1, z1, 2, // Upper Left corner
-            a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
-            b, b, b, b,  0, 1/8, x3, -1, z3, 2, // Lower left corner
-            b, b, b, b,  0, 1/8, x3, -1, z3, 2, // Lower left corner
-            a, a, a, a, .5,   0, x2, -1, z2, 2, // Upper right corner
-            b, b, b, b, .5, 1/8, x4, -1, z4, 2, // Lower right corner
+            a, a, a, a, .5, v1, 0, 0, 0, 2, // Upper Left corner
+            a, a, a, a,  1, v1, 0, 0, 0, 2, // Upper right corner
+            b, b, b, b, .5, v2, 0, 0, 0, 2, // Lower left corner
+            b, b, b, b, .5, v2, 0, 0, 0, 2, // Lower left corner
+            a, a, a, a,  1, v1, 0, 0, 0, 2, // Upper right corner
+            b, b, b, b,  1, v2, 0, 0, 0, 2, // Lower right corner
         ]
     }
 
     var quads = []
 
-    for (var z = i; z < i + 28; z++) {
-        quads = quads.concat(quad(z))
+    for (var z = 0; z < ROAD_SEGMENTS; z++) {
+        var q = quad(z),
+            segment = nextRoadSegment()
+
+        for (var i = 0; i < 6; i++) {
+            q.splice.apply(q, [ i * 10 + 6, 3 ].concat(segment[i]))
+        }
+
+        quads = quads.concat(q)
     }
+
+    roadGeometry.set(quads)
 
     return quads
 }
@@ -249,5 +288,5 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
     .concat(mountainVertices(6))
     .concat(mountainVertices(7))
 
-    .concat(roadVertices(0))
+    .concat(roadVertices())
 ), gl.DYNAMIC_DRAW)
