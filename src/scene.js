@@ -41,12 +41,12 @@ function mountainVertices(layer) {
     function quad(offset) {
         // Return a quad that is 1 unit high and 4 units wide, scaled to desired size
         return [
-            r, g, b, 1, x1, y1, (-3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper right corner
-            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1, // Lower left corner
-            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1, // Lower left corner
-            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Upper right corner
-            r, g, b, 1, x2, y2, ( 3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, 1  // Lower right corner
+            r, g, b, 1, x1, y1, (-3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, // Upper right corner
+            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, // Lower left corner
+            r, g, b, 1, x1, y2, (-3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 3 + offset) * MOUNTAIN_SCALE, MOUNTAIN_SCALE - layer * 2 + 12, z, // Upper right corner
+            r, g, b, 1, x2, y2, ( 3 + offset) * MOUNTAIN_SCALE,                - layer * 2 + 12, z  // Lower right corner
         ]
     }
 
@@ -70,12 +70,12 @@ function mountainVertices(layer) {
 
     // Quads
     return quad(-12).concat(quad(-6), quad(0), quad(6), quad(12), [
-        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper left corner
-        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper right corner
-        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Lower left corner
-        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1, // Lower left corner
-        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, 1, // Upper right corner
-        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, 1  // Lower right corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, // Upper left corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, // Upper right corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, // Lower left corner
+        r, g, b, 1, x1, y2, -15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z, // Lower left corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE,                     - layer * 2 + 12, z, // Upper right corner
+        r, g, b, 1, x1, y2,  15 * MOUNTAIN_SCALE, 6 * -MOUNTAIN_SCALE - layer * 2 + 12, z  // Lower right corner
     ])
 }
 
@@ -85,12 +85,12 @@ function cloudVertices(layer) {
     function quad(offset) {
         // Return a quad that is .5 units high and 4 units wide
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper right corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, 1, // Lower left corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, 1, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, 1, // Upper right corner
-            0, 0, 0, 0, x2, y2, ( 2 + offset) * CLOUD_SCALE,           0, z, 1  // Lower right corner
+            r, g, b, 1, x1, y1, (-2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper right corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, // Lower left corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper right corner
+            0, 0, 0, 0, x2, y2, ( 2 + offset) * CLOUD_SCALE,           0, z  // Lower right corner
         ]
     }
 
@@ -111,7 +111,7 @@ function cloudVertices(layer) {
 
 var roadPosition = new Float32Array(mat4Identity),
     nextRoadPosition = new Float32Array(mat4Identity),
-    roadGeometry = new Float32Array(28 * 6 * 10),
+    roadGeometry = new Float32Array(28 * 6 * 9),
     roadAngle = 0
 
 // Fractal pavement
@@ -182,18 +182,18 @@ function shiftRoadSegments() {
     // These will be cycled to the last segment
     var v = [
         roadGeometry[5],
-        roadGeometry[15],
-        roadGeometry[25],
-        roadGeometry[35],
-        roadGeometry[45],
-        roadGeometry[55]
+        roadGeometry[14],
+        roadGeometry[23],
+        roadGeometry[32],
+        roadGeometry[41],
+        roadGeometry[50]
     ]
 
     // Shift all position vectors (and texture coordinates) to the previous segment
     for (var i = 1; i < ROAD_SEGMENTS; i++) {
         for (var j = 0; j < 6; j++) {
-            var n = (i - 1) * 6 * 10 + j * 10 + 5,
-                m = i * 6 * 10 + j * 10 + 5
+            var n = (i - 1) * 6 * 9 + j * 9 + 5,
+                m = i * 6 * 9 + j * 9 + 5
 
             roadGeometry.set(roadGeometry.slice(m, m + 4), n)
         }
@@ -205,11 +205,11 @@ function shiftRoadSegments() {
     // Update the last segment
     var segment = nextRoadSegment()
     for (var i = 0; i < 6; i++) {
-        roadGeometry.set([ v[i] ].concat(segment[i]), (ROAD_SEGMENTS - 1) * 6 * 10 + i * 10 + 5)
+        roadGeometry.set([ v[i] ].concat(segment[i]), (ROAD_SEGMENTS - 1) * 6 * 9 + i * 9 + 5)
     }
 
     // Copy the new road geometry to the WebGL Array Buffer
-    gl.bufferSubData(gl.ARRAY_BUFFER, (6 + 4 * 3 * 6 + 8 * 6 * 6) * 40, roadGeometry)
+    gl.bufferSubData(gl.ARRAY_BUFFER, (6 + 4 * 3 * 6 + 8 * 6 * 6) * 9 * 4, roadGeometry)
 }
 
 // Generate vertex attributes for road
@@ -222,12 +222,12 @@ function roadVertices() {
 
         return [
             // FIXME: Texture coordinates are not correct
-            a, a, a, a, .5, v1, 0, 0, 0, 2, // Upper Left corner
-            a, a, a, a,  1, v1, 0, 0, 0, 2, // Upper right corner
-            b, b, b, b, .5, v2, 0, 0, 0, 2, // Lower left corner
-            b, b, b, b, .5, v2, 0, 0, 0, 2, // Lower left corner
-            a, a, a, a,  1, v1, 0, 0, 0, 2, // Upper right corner
-            b, b, b, b,  1, v2, 0, 0, 0, 2, // Lower right corner
+            a, a, a, a, .5, v1, 0, 0, 0, // Upper Left corner
+            a, a, a, a,  1, v1, 0, 0, 0, // Upper right corner
+            b, b, b, b, .5, v2, 0, 0, 0, // Lower left corner
+            b, b, b, b, .5, v2, 0, 0, 0, // Lower left corner
+            a, a, a, a,  1, v1, 0, 0, 0, // Upper right corner
+            b, b, b, b,  1, v2, 0, 0, 0  // Lower right corner
         ]
     }
 
@@ -238,7 +238,7 @@ function roadVertices() {
             segment = nextRoadSegment()
 
         for (var i = 0; i < 6; i++) {
-            q.splice.apply(q, [ i * 10 + 6, 3 ].concat(segment[i]))
+            q.splice.apply(q, [ i * 9 + 6, 3 ].concat(segment[i]))
         }
 
         quads = quads.concat(q)
@@ -255,20 +255,20 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
     [
 /*
         // Noon
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0, -53 * 5, 53, -53, 0, // Upper left corner
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  53 * 5, 53, -53, 0, // Upper right corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -53 * 5, 10, -53, 0, // Lower left corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -53 * 5, 10, -53, 0, // Lower left corner
-        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  53 * 5, 53, -53, 0, // Upper right corner
-        140 / 255, 178 / 255, 255 / 255, 1, 0, 0,  53 * 5, 10, -53, 0  // Lower right corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0, -53 * 5, 53, -53, // Upper left corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  53 * 5, 53, -53, // Upper right corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -53 * 5, 10, -53, // Lower left corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0, -53 * 5, 10, -53, // Lower left corner
+        112 / 255, 160 / 255, 255 / 255, 1, 0, 0,  53 * 5, 53, -53, // Upper right corner
+        140 / 255, 178 / 255, 255 / 255, 1, 0, 0,  53 * 5, 10, -53  // Lower right corner
 /*/
         // Sunset
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0, -53 * 5, 53, -53, 0, // Upper left corner
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  53 * 5, 53, -53, 0, // Upper right corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -53 * 5, 10, -53, 0, // Lower left corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -53 * 5, 10, -53, 0, // Lower left corner
-         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  53 * 5, 53, -53, 0, // Upper right corner
-        255 / 255, 223 / 255, 145 / 255, 1, 0, 0,  53 * 5, 10, -53, 0  // Lower right corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0, -53 * 5, 53, -53, // Upper left corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  53 * 5, 53, -53, // Upper right corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -53 * 5, 10, -53, // Lower left corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0, -53 * 5, 10, -53, // Lower left corner
+         61 / 255,  92 / 255, 134 / 255, 1, 0, 0,  53 * 5, 53, -53, // Upper right corner
+        255 / 255, 223 / 255, 145 / 255, 1, 0, 0,  53 * 5, 10, -53  // Lower right corner
 //*/
     ]
 

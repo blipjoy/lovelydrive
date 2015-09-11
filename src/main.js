@@ -10,18 +10,19 @@ const ANIM_FRAMES = 10
 function raf() {
     // Responsive canvas sizing
     resize_canvas()
-    gl.clear(gl.COLOR_BUFFER_BIT)
 
 
     // Draw linear gradient for background
     viewMatrix.set(mat4Identity)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
+    gl.uniform1i(sampler2dPointer, 0)
     gl.drawArrays(gl.TRIANGLES, 0, 6) // 6 vertices
 
 
     // Draw clouds
     viewMatrix[12] = Date.now() / -250 % (CLOUD_SCALE * 4)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
+    gl.uniform1i(sampler2dPointer, 1)
     gl.drawArrays(gl.TRIANGLES, 6, 4 * 3 * 6) // 4 layers * 3 quads * 6 vertices
 
 
@@ -53,6 +54,7 @@ function raf() {
     // Draw ground
     viewMatrix.set(camera)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
+    gl.uniform1i(sampler2dPointer, 2)
     gl.drawArrays(gl.TRIANGLES, 6 + 4 * 3 * 6 + 8 * 6 * 6, 28 * 6) // 28 quads * 6 vertices
 
 

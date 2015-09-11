@@ -76,44 +76,35 @@ var anisotropic = gl.getExtension("EXT_texture_filter_anisotropic") ?
 
 // Initialize attribute variables
 gl.vertexAttribPointer(
-    gl.getAttribLocation(handle, "x"),
-    1, // Number of floats
+    gl.getAttribLocation(handle, "v"),
+    3, // Number of floats
     gl.FLOAT,
     gl.vertexAttribPointer(
-        gl.getAttribLocation(handle, "v"),
-        3, // Number of floats
+        gl.getAttribLocation(handle, "u"),
+        2, // Number of floats
         gl.FLOAT,
-        gl.vertexAttribPointer(
-            gl.getAttribLocation(handle, "u"),
-            2, // Number of floats
+        gl.enableVertexAttribArray(gl.vertexAttribPointer(
+            gl.getAttribLocation(handle, "c"),
+            4, // Number of floats
             gl.FLOAT,
-            gl.enableVertexAttribArray(gl.vertexAttribPointer(
-                gl.getAttribLocation(handle, "c"),
-                4, // Number of floats
-                gl.FLOAT,
-                gl.enableVertexAttribArray(1),
-                40, // Stride: (4 + 3 + 2 + 1) * 4
-                gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
-            )),
-            40, // Stride: (4 + 3 + 2 + 1) * 4
-            16  // Offset: 4 * 4
-        ),
-        40, // Stride: (4 + 3 + 2 + 1) * 4
-        24  // Offset: (4 + 2) * 4
+            gl.enableVertexAttribArray(1),
+            36, // Stride: (4 + 3 + 2) * 4
+            gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()) // Offset: 0 * 4
+        )),
+        36, // Stride: (4 + 3 + 2) * 4
+        16  // Offset: 4 * 4
     ),
-    40, // Stride: (4 + 3 + 2 + 1) * 4
-    36  // Offset: (4 + 3 + 2) * 4
+    36, // Stride: (4 + 3 + 2) * 4
+    24  // Offset: (4 + 2) * 4
 )
 gl.enableVertexAttribArray(2)
-gl.enableVertexAttribArray(3)
 
 
 // Initialize uniform variables
 var projectionMatrixPointer =   gl.getUniformLocation(handle, "p")
 var viewMatrixPointer =         gl.getUniformLocation(handle, "m")
-
-gl.uniform1iv(gl.getUniformLocation(handle, "s"), [ 0, 1, 2 ])
-var viewMatrix = new Float32Array(mat4Identity)
+var sampler2dPointer =          gl.getUniformLocation(handle, "s")
+var viewMatrix =                new Float32Array(mat4Identity)
 
 
 // Resize function
