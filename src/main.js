@@ -38,6 +38,11 @@ function updatePhysics() {
         crashed = 1
         velocity = heading = 0
 
+        // Cheap hack; add a few more road segments to hide the gap :)
+        for (i = 0; i < 14; i++) {
+            shiftRoadSegments()
+        }
+
         var div = document.createElement("div"),
             text = document.createTextNode("You Crashed!")
 
