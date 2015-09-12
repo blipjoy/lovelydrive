@@ -136,3 +136,6 @@ function resize_canvas() {
         )
     }
 }
+
+// Update progress bar
+progress()

@@ -1,13 +1,85 @@
 
-var camera = new Float32Array(roadPosition),
+/*
+ * So many variables!
+ *
+ * `camera` and `cameraTemp` are 4x4 matrices for camera motion
+ * `mountainScroll` sets the horizontal motion for the mountains
+ * `velocity` and `heading` are for physics
+ * `anim` is a frame counter used for the title screen and crash screen animations
+ * `playerControl` switches between auto-drive (0) and player-drive (1)
+ * `controlDelay` is a boolean that disallows player input when set (1)
+ */
+var camera = new Float32Array(16),
     cameraTemp = new Float32Array(16),
-    mountainScroll = velocity = heading = crashed = 0
+    mountainScroll = velocity = heading = playerControl = anim = 0,
+    controlDelay = 1,
+    audioCtx = new AudioContext(),
+    songGenerator = new sonantx.MusicGenerator(bgm_lovely_drive)
 
-// Initial camera position
-mat4Translate(camera, -1, 0, 0)
+const ANIM_FRAMES = 10
+
+// Play some sweet driving tunes
+function startMusic(buffer) {
+    var source = audioCtx.createBufferSource(),
+        status = document.getElementById("m"),
+        bar = document.getElementById("p")
+
+    source.buffer = buffer
+    source.loop = 1
+    source.connect(audioCtx.destination)
+    source.start(0)
+
+    // Start animation
+    status.style.opacity = 0
+    bar.style.opacity = 0
+    document.body.firstChild.style.opacity = 1
+    raf()
+
+    // Accept input in about 2 seconds
+    setTimeout(function () {
+        controlDelay = 0
+
+        document.body.removeChild(status)
+        document.body.removeChild(bar)
+    }, 1000)
+}
+
+songGenerator.createAudioBuffer(function (buffer) {
+    // Update progress bar
+    progress()
+
+    // iOS is the devil
+    var needsUnmute = enableiOSAudio(function () {
+        // Start music when iOS audio is enabled
+        startMusic(buffer)
+    })
+
+    if (needsUnmute) {
+        // Inform player to interact
+        document.getElementById("m").innerText = "Tap to start..."
+    }
+    else {
+        startMusic(buffer)
+    }
+})
+
+function startGame() {
+    playerControl = 1
+
+    // Remove the logo
+    document.body.removeChild(document.getElementById("l"))
+
+    // Initial camera position
+    camera.set(roadPosition)
+    mat4Translate(camera, 1, 0, 0)
+}
 
 function updatePhysics() {
-    if (crashed) {
+    if (!playerControl) {
+        if (!controlDelay && inputs.throttle) {
+            startGame()
+        }
+
         return
     }
 
@@ -35,19 +107,18 @@ function updatePhysics() {
 
     if (dot1 > 36 || dot2 > 36) { // 6^2, where 6 is the width of the road
         // Running off the road ends the game
-        crashed = 1
-        velocity = heading = 0
+        playerControl = anim = velocity = heading = 0
 
-        // Cheap hack; add a few more road segments to hide the gap :)
-        for (i = 0; i < 14; i++) {
-            shiftRoadSegments()
-        }
+        // Accept control input in about 1 second
+        controlDelay = 1
+        setTimeout(function () {
+            controlDelay = 0
+        }, 1000)
 
-        var div = document.createElement("div"),
-            text = document.createTextNode("You Crashed!")
-
-        div.setAttribute("class", "t")
-        div.appendChild(text)
+        // Reconfigure the logo with a nice loss message
+        var div = document.createElement("div")
+        div.setAttribute("id", "l")
+        div.innerHTML = "Lovely&nbsp; &nbsp; <br>&nbsp; &nbsp; Crash!"
         document.body.appendChild(div)
     }
     else if (Math.sqrt(dot1) + Math.sqrt(dot2) < 6.1) { // With 10% margin of error
@@ -84,16 +155,33 @@ function raf() {
 
 
     // Draw mountains
-    mountainScroll += heading * 10
+    mountainScroll += playerControl ? heading * 10 : roadAngle
     viewMatrix[12] = mountainScroll % (MOUNTAIN_SCALE * 6)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
     gl.drawArrays(gl.TRIANGLES, 6 + 4 * 3 * 6, 8 * 6 * 6) // 8 layers * 6 quads * 6 vertices
 
 
     // Move camera
-    mat4RotateY(camera, heading)
-    mat4Translate(camera, 0, 0, -velocity)
-    mat4Inverse(cameraTemp, camera)
+    if (playerControl) {
+        mat4RotateY(camera, heading)
+        mat4Translate(camera, 0, 0, -velocity)
+        mat4Inverse(cameraTemp, camera)
+    }
+    else {
+        if (!(anim % ANIM_FRAMES)) {
+            shiftRoadSegments()
+        }
+
+        // Tween the camera
+        var t = anim % ANIM_FRAMES / ANIM_FRAMES
+        cameraTemp.set(mat4Identity)
+        mat4RotateY(cameraTemp, -roadAngle * t)
+        mat4Translate(cameraTemp, -1, 0, -t)
+        mat4Inverse(camera, roadPosition)
+        mat4Multiply(cameraTemp, camera)
+
+        anim++
+    }
 
 
     // Draw ground
@@ -105,4 +193,3 @@ function raf() {
 
     requestAnimationFrame(raf)
 }
-raf()

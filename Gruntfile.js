@@ -10,6 +10,9 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
+          "src/progress.js",
+          "src/vendors/sonantx.js",
+          "src/bgm/lovely_drive.js",
           "src/polyfill.js",
           "src/math.js",
           "src/webgl.js",
@@ -277,7 +280,7 @@ module.exports = function(grunt) {
     cssmin: {
       dist: {
         files: {
-          "build/index.min.css": "style/index.css",
+          "build/index.min.css": [ "style/index.css", "style/loader.css" ],
         }
       }
     },

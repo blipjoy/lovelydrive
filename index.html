@@ -2,9 +2,14 @@
     <meta id=viewport name=viewport content=width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no>
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name=apple-mobile-web-app-status-bar-style content=black>
+
+    <!-- build:css inline build/index.min.css -->
+    <link rel=stylesheet type=text/css href=style/index.css>
+    <link rel=stylesheet type=text/css href=style/loader.css>
+    <!-- /build -->
+
     <!-- XXX: Do not add elements OR whitespace between the head and canvas -->
 </head><canvas id=c></canvas>
-
 
 <!-- build:remove -->
 <!-- Vertex shader: src/glsl/vertex.glsl -->
@@ -45,11 +50,17 @@
 </script>
 <!-- /build -->
 
-<!-- build:css inline build/index.min.css -->
-<link rel=stylesheet type=text/css href=style/index.css>
-<!-- /build -->
+<!-- Logo -->
+<div id=l><span>It's a</span><br>Lovely <span>day<br>for<br>a</span> Drive</div>
+
+<!-- Status message and Progress bar -->
+<div id=m>Loading<div id=s></div></div>
+<div id=p></div>
 
 <!-- build:js inline build/app.min.js -->
+<script src=src/progress.js></script>
+<script src=src/vendors/sonantx.js></script>
+<script src=src/bgm/lovely_drive.js></script>
 <script src=src/polyfill.js></script>
 <script src=src/math.js></script>
 <script src=src/webgl.js></script>

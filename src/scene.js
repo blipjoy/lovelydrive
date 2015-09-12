@@ -110,7 +110,9 @@ function cloudVertices(layer) {
 
 
 var roadPosition = new Float32Array(mat4Identity),
-    roadGeometry = new Float32Array(28 * 6 * 9)
+    nextRoadPosition = new Float32Array(mat4Identity),
+    roadGeometry = new Float32Array(28 * 6 * 9),
+    roadAngle = 0
 
 // Fractal pavement
 fractal(0, .2, pinkNoiseFn, eval) // eval is the identity function (saves 8 bytes)
@@ -121,7 +123,7 @@ var nextRoadAngle = (function() {
 
     return function () {
         // Compute a rotation angle from the next fractal node
-        return fractalData[~~(z / FRACTAL_SIZE) % FRACTAL_SIZE][z++ % FRACTAL_SIZE] * Math.PI / 8
+        return roadAngle = fractalData[~~(z / FRACTAL_SIZE) % FRACTAL_SIZE][z++ % FRACTAL_SIZE] * Math.PI / 8
     }
 })()
 
@@ -148,17 +150,20 @@ var nextRoadSegment = (function () {
             z2 = z4
         }
 
+        // Copy the last road position for the camera
+        roadPosition.set(nextRoadPosition)
+
         // Rotate the pivot point
-        mat4RotateY(roadPosition, nextRoadAngle())
+        mat4RotateY(nextRoadPosition, nextRoadAngle())
 
         // Get the next xz3 and xz4
-        mat4Translate(roadPosition, -3, 0, 1)
-        x3 = roadPosition[12]
-        z3 = roadPosition[14]
-        mat4Translate(roadPosition, 6, 0, 0)
-        x4 = roadPosition[12]
-        z4 = roadPosition[14]
-        mat4Translate(roadPosition, -3, 0, 0)
+        mat4Translate(nextRoadPosition, -3, 0, 1)
+        x3 = nextRoadPosition[12]
+        z3 = nextRoadPosition[14]
+        mat4Translate(nextRoadPosition, 6, 0, 0)
+        x4 = nextRoadPosition[12]
+        z4 = nextRoadPosition[14]
+        mat4Translate(nextRoadPosition, -3, 0, 0)
 
         return [
             [ x1, -1, z1 ], // Upper Left corner
@@ -285,3 +290,6 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(
 
     .concat(roadVertices())
 ), gl.DYNAMIC_DRAW)
+
+// Update progress bar
+progress()

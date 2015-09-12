@@ -84,6 +84,9 @@ for (var i = 0; i < 2; i++) {
     for (var x = 12; x >= 8; x--) {
         ctx.putImageData(img, TEXTURE_MAPW + 16 + x, (TEXTURE_MAPW + 16) * i + 8)
     }
+
+    // Update progress bar
+    progress()
 }
 
 
@@ -172,6 +175,9 @@ gl.texImage2D(
 // Disable mipmap on the background texture (not needed, and causes texture seams)
 gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 
+// Update progress bar
+progress()
+
 
 // RENDER ASPHALT
 
@@ -248,6 +254,9 @@ ctx.putImageData(img, 0, 0)
 ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, 0)
 ctx.putImageData(img, 0, ASPHALT_TEXTURE_SIZE)
 ctx.putImageData(img, ASPHALT_TEXTURE_SIZE, ASPHALT_TEXTURE_SIZE)
+
+// Update progress bar
+progress()
 
 function yellowStripes(u, v) {
     // Get the center vertical strip of asphalt texture
@@ -348,3 +357,6 @@ gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
 if (anisotropic) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAX_ANISOTROPY_EXT, anisotropic)
 }
+
+// Update progress bar
+progress()
