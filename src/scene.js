@@ -31,7 +31,8 @@
  */
 
 const MOUNTAIN_SCALE = 20 // I don't know why! :) Maybe because science!
-const CLOUD_SCALE = 52 // Same as depth!
+const CLOUD_SCALE_X = 80 // No reason. Just stretch it enough to handle ~3:1 displays
+const CLOUD_SCALE_Y = 52 // Same as depth!
 const FIREFOX = navigator.userAgent.indexOf("Firefox/") > 0
 const ROAD_SEGMENTS = 28
 
@@ -85,12 +86,12 @@ function cloudVertices(layer) {
     function quad(offset) {
         // Return a quad that is .5 units high and 4 units wide
         return [
-            r, g, b, 1, x1, y1, (-2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper right corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, // Lower left corner
-            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE,           0, z, // Lower left corner
-            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE, CLOUD_SCALE, z, // Upper right corner
-            0, 0, 0, 0, x2, y2, ( 2 + offset) * CLOUD_SCALE,           0, z  // Lower right corner
+            r, g, b, 1, x1, y1, (-2 + offset) * CLOUD_SCALE_X, CLOUD_SCALE_Y, z, // Upper left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE_X, CLOUD_SCALE_Y, z, // Upper right corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE_X,             0, z, // Lower left corner
+            0, 0, 0, 0, x1, y2, (-2 + offset) * CLOUD_SCALE_X,             0, z, // Lower left corner
+            r, g, b, 1, x2, y1, ( 2 + offset) * CLOUD_SCALE_X, CLOUD_SCALE_Y, z, // Upper right corner
+            0, 0, 0, 0, x2, y2, ( 2 + offset) * CLOUD_SCALE_X,             0, z  // Lower right corner
         ]
     }
 
@@ -98,7 +99,7 @@ function cloudVertices(layer) {
         x2 = 1 - 8 / TEXTURE_SIZE,
         y1 = layer / 4 + 8 / TEXTURE_SIZE,
         y2 = y1 + .25,
-        z = layer * 8 - CLOUD_SCALE,
+        z = layer * 8 - CLOUD_SCALE_Y,
         // Sunset
         r = [ 239, 102,  62, 221 ][layer] / 255,
         g = [ 137, 145,  22, 148 ][layer] / 255,

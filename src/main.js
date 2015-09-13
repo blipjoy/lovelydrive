@@ -171,7 +171,7 @@ function raf() {
 
 
     // Draw clouds
-    viewMatrix[12] = Date.now() / -250 % (CLOUD_SCALE * 4)
+    viewMatrix[12] = Date.now() / -250 % (CLOUD_SCALE_X * 4)
     gl.uniformMatrix4fv(viewMatrixPointer, 0, viewMatrix)
     gl.uniform1i(sampler2dPointer, 1)
     gl.drawArrays(gl.TRIANGLES, 6, 4 * 3 * 6) // 4 layers * 3 quads * 6 vertices
