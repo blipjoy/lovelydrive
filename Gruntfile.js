@@ -12,6 +12,7 @@ module.exports = function(grunt) {
         src: [
           "src/progress.js",
           "src/vendors/sonantx.js",
+          "src/vendors/motor.js",
           "src/bgm/lovely_drive.js",
           "src/polyfill.js",
           "src/math.js",

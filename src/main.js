@@ -14,7 +14,8 @@ var camera = new Float32Array(16),
     mountainScroll = velocity = heading = playerControl = anim = 0,
     controlDelay = 1,
     audioCtx = new AudioContext(),
-    songGenerator = new sonantx.MusicGenerator(bgm_lovely_drive)
+    songGenerator = new sonantx.MusicGenerator(bgm_lovely_drive),
+    motor = new MotorSound(audioCtx, new MotorSound.DeterministicGenerator(.1))
 
 const ANIM_FRAMES = 10
 
@@ -28,6 +29,11 @@ function startMusic(buffer) {
     source.loop = 1
     source.connect(audioCtx.destination)
     source.start(0)
+
+    // Start your engines!
+    motor.setVolume(0)
+    motor.regenerate()
+    motor.start()
 
     // Start animation
     status.style.opacity = 0
@@ -92,6 +98,10 @@ function updatePhysics() {
 
     velocity = (neg < 0) ? neg : (pos > 0) ? pos : 0
 
+    // Motor sounds make your car go faster!
+    motor.setSpeed(-velocity * 2 + .3)
+    motor.setVolume(-velocity / 2 + .1)
+
     // Steering
     heading = inputs.steering * -velocity * .3
 
@@ -108,6 +118,9 @@ function updatePhysics() {
     if (dot1 > 36 || dot2 > 36) { // 6^2, where 6 is the width of the road
         // Running off the road ends the game
         playerControl = anim = velocity = heading = 0
+
+        // Motor off
+        motor.setVolume(0)
 
         // Accept control input in about 1 second
         controlDelay = 1
