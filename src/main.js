@@ -51,7 +51,7 @@ function startMusic(buffer) {
 
         document.body.removeChild(status)
         document.body.removeChild(bar)
-    }, 1000)
+    }, 2000)
 }
 
 songGenerator.createAudioBuffer(function (buffer) {
