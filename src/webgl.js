@@ -1,24 +1,6 @@
 // Initialize WebGL
 var gl = document.body.firstChild.getContext("webgl", { alpha: 0 })
 
-// Hash all WebGL methods
-// See Gruntfile.js for hash replacements
-var tmp = []
-for (i in gl) {
-// XXX: <DEBUG>
-    // Workaround a bug in WebGL Inspector
-    // See: https://github.com/benvanik/WebGL-Inspector/issues/134
-    gl[i] &&
-// XXX: </DEBUG>
-
-    // First, filter the methods into an array
-    gl[i].bind && tmp.push(i)
-}
-for (i in tmp.sort()) {
-    // Then map the sorted methods into the array
-    gl[i] = gl[tmp[i]].bind(gl)
-}
-
 // Build the shader program
 var handle = gl.createProgram()
 
