@@ -16,13 +16,13 @@ The theme for js13k-2015 is "Reversed". If *Desert Bus* was the worst game ever 
 
 ## Controls
 
-* USB or wireless Gamepad: Left joystick to steer, [almost] any button for throttle
-* Keyboard: A (:arrow_left:) and D (:arrow_right:) to steer, S (:arrow_down:) for throttle
-* Mobile: Tilt sensor to steer, tap/hold for throttle
+* USB or Wireless Gamepad: `Left joystick` to steer, `[almost] any button` for throttle
+* Keyboard: `A` (:arrow_left:) and `D` (:arrow_right:) to steer, `S` (:arrow_down:) for throttle
+* Mobile: `Tilt sensor` to steer, `tap/hold` for throttle
 
 ### Tips
 
-Use a gamepad for the best possible experience. Beware that not all gamepads will have the "standard" button mapping in all browsers. (Tested with a PS3 controller on Chrome)
+Use a gamepad for the best possible experience. Beware that not all gamepads will have the "standard" button mapping in all browsers. (Tested with a PS3 controller on Chrome and Firefox)
 
 There are known limitations with calibrating the mobile steering. Your best bet might be to calibrate your body (spin around while tapping slowly until the car stops turning). When you are in a good location, the tilt sensor will let you drive as if your mobile device is the steering wheel.
 
@@ -65,6 +65,10 @@ The code is intended to be sized optimized, which means it will generally run sl
 * Prefer duplicate code over reusable functions (better zip compression)
 * Code order matters (try to reduce entropy)
 * Sometimes more is less (use eg. vec4 everywhere instead of multiple data types, even smaller sizes)
+
+### WebGL and WebAudio
+
+That's it folks! That's the secret. Just use WebGL and WebAudio. All of your dreams will come true.
 
 ### Fractals
 
