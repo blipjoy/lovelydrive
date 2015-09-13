@@ -66,22 +66,42 @@ var updateGamepads = navigator.getGamepads ? function () {
     var gamepads = navigator.getGamepads()
 
     // Only one gamepad supported
-    if (gamepads[0] && gamepads[0].mapping == "standard") {
-        // Check any of the face and trigger buttons
+    if (gamepads[0]) {
         inputs.throttle = 0
-        for (var i = 0; i < 8; i++) {
-            if (gamepads[0].buttons[i].value) {
-                inputs.throttle = 1
+
+        // Standard gamepad mapping is best gamepad mapping
+        if (gamepads[0].mapping == "standard") {
+            // Check any of the face and trigger buttons
+            for (var i = 0; i < 8; i++) {
+                if (gamepads[0].buttons[i].value) {
+                    inputs.throttle = Math.max(inputs.throttle, gamepads[0].buttons[i].value)
+                }
             }
+
+            inputs.steering =
+                // Check D-pad left, and left-control-stick left
+                -gamepads[0].buttons[14].value ||
+                (gamepads[0].axes[0] < -.1 ? gamepads[0].axes[0] : 0) ||
+
+                // Check D-pad right, and left-control-stick right
+                gamepads[0].buttons[15].value ||
+                (gamepads[0].axes[0] > .1 ? gamepads[0].axes[0] : 0)
         }
+        else {
+            // UGH!
+            // Check any of the face and trigger buttons
+            for (var i = 0; i < gamepads[0].buttons.length; i++) {
+                if (gamepads[0].buttons[i].value) {
+                    inputs.throttle = Math.max(inputs.throttle, gamepads[0].buttons[i].value)
+                }
+            }
 
-        inputs.steering =
-            // Check D-pad left, and left-control-stick left
-            -gamepads[0].buttons[14].value ||
-            (gamepads[0].axes[0] < -.1 ? gamepads[0].axes[0] : 0) ||
+            inputs.steering =
+                // Check D-pad left, and left-control-stick left
+                (gamepads[0].axes[0] < -.1 ? gamepads[0].axes[0] : 0) ||
 
-            // Check D-pad right, and left-control-stick right
-            gamepads[0].buttons[15].value ||
-            (gamepads[0].axes[0] > .1 ? gamepads[0].axes[0] : 0)
+                // Check D-pad right, and left-control-stick right
+                (gamepads[0].axes[0] > .1 ? gamepads[0].axes[0] : 0)
+        }
     }
 } : function () {}
