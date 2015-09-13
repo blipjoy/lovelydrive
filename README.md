@@ -8,9 +8,9 @@ A ridiculous [js13k-2015](http://2015.js13kgames.com/) game.
 
 ## About
 
-Lovely Drive pays homage to Desert Bus. You are a driver on a lonely desert highway with nothing but the wind rushing by and your chill tunes on the radio. Unfortunately, your transmission is stuck in reverse. But that won't let you stop you from enjoying this lovely day.
+Lovely Drive pays homage to Desert Bus. You are a driver on a lonely desert highway with nothing but the wind rushing by and your chill tunes on the radio. Unfortunately, your transmission is stuck in reverse. But that won't stop you from enjoying this lovely day...
 
-The theme for js13k-2015 is "Reversed". If *Desert Bus* was the worst game ever made, and Lovely Drive is *Desert Bus in reverse*, then by that logic Lovely Drive is the *best game ever made*.
+Consider: the theme for js13k-2015 is "Reversed". If *Desert Bus* was the worst game ever made, and Lovely Drive is *Desert Bus in reverse*, then by that logic Lovely Drive is the *best game ever made*.
 
 ![Desktop screenshot](screenshots/desktop.png?raw=true "Desktop Screenshot")
 
@@ -37,6 +37,10 @@ The following list of platforms have been tested. Others may (or may not!) work.
 * Android
 
 ![iPhone 4S screenshot](screenshots/iphone4s.png?raw=true "iPhone 4S Screenshot")
+
+## Important Note
+
+This game can take several minutes to load, especially on low power mobile platforms. Please be patient, and enjoy the ride!
 
 ## Building
 
