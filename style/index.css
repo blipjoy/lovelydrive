@@ -2,6 +2,7 @@ body {
   height: 100%;
   margin: 0;
   background-color: #000;
+  color: #fff;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -14,17 +15,27 @@ body {
   transition: opacity 2s;
 }
 
+#l, #m, #p, #d {
+  position: absolute;
+  z-index: 9;
+}
+
+#m, #d {
+  font-family: Verdana;
+}
+
+#m, #d span {
+  font-size: 16px;
+}
+
 /* Logo */
 #l {
-  position: absolute;
   top: 50%;
   width: 100%;
   margin-top: -140px;
   text-align: center;
-  z-index: 9;
   font-family: cursive;
   font-size: 80px;
-  color: #fff;
 }
 
 #l span {
@@ -34,23 +45,25 @@ body {
 
 /* Status Message */
 #m {
-  position: absolute;
-  z-index: 9;
   bottom: 10px;
   left: 20px;
-  color: #fff;
-  font-family: Verdana;
-  font-size: 16px;
   transition: opacity 2s;
 }
 
 /* Progress Bar */
 #p {
-  position: absolute;
-  z-index: 9;
   bottom: 0;
   left: 0;
   background-color: #149be8;
   height: 4px;
   transition: opacity 2s;
+}
+
+/* Score */
+
+#d {
+  top: 0;
+  right: 10px;
+  font-size: 25px;
+  text-align: right;
 }

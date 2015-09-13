@@ -21,6 +21,7 @@ module.exports = function(grunt) {
           "src/textures.js",
           "src/scene.js",
           "src/input.js",
+          "src/utils.js",
           "src/main.js",
         ],
         dest: "<%= path.main %>"

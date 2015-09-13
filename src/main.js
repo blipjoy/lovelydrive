@@ -6,16 +6,20 @@
  * `mountainScroll` sets the horizontal motion for the mountains
  * `velocity` and `heading` are for physics
  * `anim` is a frame counter used for the title screen and crash screen animations
+ * `score` is a running total of the distance (in world units)
+ * `highScore` is ... pretty obvious
  * `playerControl` switches between auto-drive (0) and player-drive (1)
  * `controlDelay` is a boolean that disallows player input when set (1)
  */
 var camera = new Float32Array(16),
     cameraTemp = new Float32Array(16),
-    mountainScroll = velocity = heading = playerControl = anim = 0,
+    mountainScroll = velocity = heading = playerControl = anim = score = 0,
+    highScore = +localStorage.getItem("highScore") || 0,
     controlDelay = 1,
     audioCtx = new AudioContext(),
     songGenerator = new sonantx.MusicGenerator(bgm_lovely_drive),
-    motor = new MotorSound(audioCtx, new MotorSound.DeterministicGenerator(.1))
+    motor = new MotorSound(audioCtx, new MotorSound.DeterministicGenerator(.1)),
+    distance = document.getElementById("d")
 
 const ANIM_FRAMES = 10
 
@@ -90,20 +94,24 @@ function updatePhysics() {
     }
 
     // Acceleration
-    velocity = Math.max(velocity - inputs.throttle * .001, -.5)
+    velocity = Math.max(velocity + inputs.throttle * .001, -.5)
 
     // Friction
-    var neg = velocity + 5e-4,
-        pos = velocity - 5e-4
-
-    velocity = (neg < 0) ? neg : (pos > 0) ? pos : 0
-
-    // Motor sounds make your car go faster!
-    motor.setSpeed(-velocity * 2 + .3)
-    motor.setVolume(-velocity / 2 + .1)
+    var pos = velocity - 5e-4
+    velocity = (pos > 0) ? pos : 0
 
     // Steering
-    heading = inputs.steering * -velocity * .3
+    heading = inputs.steering * velocity * .3
+
+    // Motor sounds make your car go faster!
+    motor.setSpeed(velocity * 2 + .3)
+    motor.setVolume(velocity / 2 + .1)
+
+    // Update scores
+    score += velocity
+    highScore = Math.max(highScore, score)
+    distance.innerHTML = "distance: " + printFloat(score, 3) + "m<br>" +
+        "<span>high: " + printFloat(highScore, 3) + "m</span>"
 
     // Collision detection
     var cx = camera[12],
@@ -117,7 +125,9 @@ function updatePhysics() {
 
     if (dot1 > 36 || dot2 > 36) { // 6^2, where 6 is the width of the road
         // Running off the road ends the game
-        playerControl = anim = velocity = heading = 0
+        playerControl = anim = velocity = heading = score = 0
+
+        localStorage.setItem("highScore", highScore)
 
         // Motor off
         motor.setVolume(0)
@@ -177,7 +187,7 @@ function raf() {
     // Move camera
     if (playerControl) {
         mat4RotateY(camera, heading)
-        mat4Translate(camera, 0, 0, -velocity)
+        mat4Translate(camera, 0, 0, velocity)
         mat4Inverse(cameraTemp, camera)
     }
     else {
