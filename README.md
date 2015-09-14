@@ -85,3 +85,4 @@ Diamond-square is combined with different noise generators (white noise and pink
 * [Sonant-X](https://github.com/nicolas-van/sonant-x) (zlib license)
 * [js-motor-sound-generation](https://github.com/cemrich/js-motor-sound-generation) (MIT license)
 * [css-loaders](https://github.com/lukehaas/css-loaders) (MIT license)
+* [howler.js](https://github.com/goldfire/howler.js) (MIT license)
