@@ -27,8 +27,8 @@
 #s:after,
 #s {
   border-radius: 50%;
-  width: 1em;
-  height: 1em;
+  width: 0.5em;
+  height: 0.5em;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
   -webkit-animation: load 1.8s infinite ease-in-out;
@@ -37,7 +37,7 @@
 #s {
   font-size: 10px;
   position: absolute;
-  margin: -38px 0 0 90px;
+  margin: -40px 0 0 80px;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
@@ -45,12 +45,12 @@
   animation-delay: -0.16s;
 }
 #s:before {
-  left: -1.5em;
+  left: -1em;
   -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
 #s:after {
-  left: 1.5em;
+  left: 1em;
 }
 #s:before,
 #s:after {

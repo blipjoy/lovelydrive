@@ -3,6 +3,7 @@ body {
   margin: 0;
   background-color: #000;
   color: #fff;
+  font-family: cursive;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -20,11 +21,11 @@ body {
   z-index: 9;
 }
 
-#m, #d {
-  font-family: Verdana;
+#m {
+  font-size: 20px;
 }
 
-#m, #d span {
+#d span {
   font-size: 16px;
 }
 
@@ -34,7 +35,6 @@ body {
   width: 100%;
   margin-top: -140px;
   text-align: center;
-  font-family: cursive;
   font-size: 80px;
 }
 
