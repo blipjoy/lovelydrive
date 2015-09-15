@@ -60,6 +60,8 @@ This will create a distro file in `build/index.zip`. The goal is for this file t
 
 ## Tech
 
+Read [the postmortem](http://blog.kodewerx.org/2015/09/its-lovely-day-for-postmortem.html) for an in-depth review of how this game was designed.
+
 ### Size Optimized
 
 The code is intended to be sized optimized, which means it will generally run slower than its full potential. Some of the optimizations are outlined below.
