@@ -69,7 +69,7 @@ function enableiOSAudio(callback) {
                     iOSAudioEnabled = 1
 
                     // Remove the touch start listener.
-                    document.removeEventListener("touchstart", unlock, false)
+                    document.removeEventListener("touchend", unlock, false)
 
                     // Notify client that we're ready to play
                     callback()
@@ -78,7 +78,7 @@ function enableiOSAudio(callback) {
         }
 
     // Setup a touch start listener to attempt an unlock in.
-    document.addEventListener("touchstart", unlock, false);
+    document.addEventListener("touchend", unlock, false);
 
     return 1
 }
