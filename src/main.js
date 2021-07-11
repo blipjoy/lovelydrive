@@ -5,7 +5,8 @@
  * `camera` and `cameraTemp` are 4x4 matrices for camera motion
  * `mountainScroll` sets the horizontal motion for the mountains
  * `velocity` and `heading` are for physics
- * `anim` is a frame counter used for the title screen and crash screen animations
+ * `anim` is a timer used for the title screen and crash screen animations
+ * `lastFrameTime` is a timer for computing the frame delta time
  * `score` is a running total of the distance (in world units)
  * `highScore` is ... pretty obvious
  * `playerControl` switches between auto-drive (0) and player-drive (1)
@@ -16,12 +17,13 @@ var camera = new Float32Array(16),
     mountainScroll = velocity = heading = playerControl = anim = score = 0,
     highScore = +localStorage.getItem("highScore") || 0,
     controlDelay = 1,
+    lastFrameTime = Date.now(),
     audioCtx = new AudioContext(),
     songGenerator = new sonantx.MusicGenerator(bgm_lovely_drive),
     motor = new MotorSound(audioCtx, new MotorSound.DeterministicGenerator(.1)),
     distance = document.getElementById("d")
 
-const ANIM_FRAMES = 10
+const ANIM_TIME = 0.167
 
 // Play some sweet driving tunes
 function startMusic(buffer) {
@@ -84,7 +86,7 @@ function startGame() {
     mat4Translate(camera, 1, 0, 0)
 }
 
-function updatePhysics() {
+function updatePhysics(frameScale) {
     if (!playerControl) {
         if (!controlDelay && inputs.throttle) {
             startGame()
@@ -94,10 +96,10 @@ function updatePhysics() {
     }
 
     // Acceleration
-    velocity = Math.max(velocity + inputs.throttle * .001, -.5)
+    velocity = Math.max(velocity + inputs.throttle * .001 * frameScale, -.5)
 
     // Friction
-    var pos = velocity - 5e-4
+    var pos = velocity - 5e-4 * frameScale
     velocity = (pos > 0) ? pos : 0
 
     // Steering
@@ -160,7 +162,11 @@ function raf() {
 
 
     // "Physics" lol!
-    updatePhysics()
+    var now = Date.now(),
+        dt = (now - lastFrameTime) / 1000,
+        frameScale = dt / (1 / 60)
+    updatePhysics(frameScale)
+    lastFrameTime = now
 
 
     // Draw linear gradient for background
@@ -191,19 +197,19 @@ function raf() {
         mat4Inverse(cameraTemp, camera)
     }
     else {
-        if (!(anim % ANIM_FRAMES)) {
-            shiftRoadSegments()
-        }
-
         // Tween the camera
-        var t = anim % ANIM_FRAMES / ANIM_FRAMES
+        var t = anim / ANIM_TIME
         cameraTemp.set(mat4Identity)
         mat4RotateY(cameraTemp, -roadAngle * t)
         mat4Translate(cameraTemp, -1, 0, -t)
         mat4Inverse(camera, roadPosition)
         mat4Multiply(cameraTemp, camera)
 
-        anim++
+        anim += dt
+        if (anim > ANIM_TIME) {
+            shiftRoadSegments()
+            anim = 0;
+        }
     }
 
 
