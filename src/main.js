@@ -60,19 +60,14 @@ songGenerator.createAudioBuffer(function (buffer) {
     // Update progress bar
     progress()
 
-    // iOS is the devil
-    var needsUnmute = enableiOSAudio(function () {
-        // Start music when iOS audio is enabled
+    // Web audio is the devil
+    enableAudio(function () {
+        // Start music when audio is enabled
         startMusic(buffer)
     })
 
-    if (needsUnmute) {
-        // Inform player to interact
-        document.getElementById("m").innerText = "Tap to start..."
-    }
-    else {
-        startMusic(buffer)
-    }
+    // Inform player to interact
+    document.getElementById("m").innerText = "Tap to start..."
 })
 
 function startGame() {

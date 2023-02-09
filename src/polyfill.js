@@ -10,7 +10,7 @@ if (!Float32Array.prototype.slice) {
 }
 
 /*
- * iOS will only allow audio to be played after a user interaction.
+ * Web audio is only allowed to be played after a user interaction.
  * Attempt to automatically unlock audio on the first user interaction.
  * Concept from: http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
  *
@@ -36,16 +36,15 @@ if (!Float32Array.prototype.slice) {
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var iOSAudioEnabled = 0
-function enableiOSAudio(callback) {
-    // Only run this on iOS if audio isn't already eanbled.
-    if (iOSAudioEnabled || !/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+var audioEnabled = 0
+function enableAudio(callback) {
+    // Only run this if audio isn't already enabled.
+    if (audioEnabled) {
         return
     }
 
-    // Call this method on touch start to create and play a buffer,
-    // then check if the audio actually played to determine if
-    // audio has now been unlocked on iOS.
+    // Call this method on touch start to create and play a buffer, then check if the audio
+    // actually played to determine if audio has been unlocked.
     var ctx = new AudioContext(),
         unlock = function() {
             // Create an empty buffer.
@@ -66,10 +65,10 @@ function enableiOSAudio(callback) {
             setTimeout(function () {
                 if ((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
                     // Update the unlocked state and prevent this check from happening again.
-                    iOSAudioEnabled = 1
+                    audioEnabled = 1
 
                     // Remove the touch start listener.
-                    document.removeEventListener("touchend", unlock, false)
+                    document.removeEventListener("pointerup", unlock, false)
 
                     // Notify client that we're ready to play
                     callback()
@@ -78,7 +77,7 @@ function enableiOSAudio(callback) {
         }
 
     // Setup a touch start listener to attempt an unlock in.
-    document.addEventListener("touchend", unlock, false);
+    document.addEventListener("pointerup", unlock, false);
 
     return 1
 }

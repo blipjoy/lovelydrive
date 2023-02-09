@@ -33,6 +33,7 @@ The following list of platforms have been tested. Others may (or may not!) work.
 * Chrome
 * Firefox
 * Safari
+* Edge
 * iOS
 * Android
 
