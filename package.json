@@ -5,7 +5,7 @@
   "author": "Jay Oster <jay@kodewerx.org>",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "^1.4.1",
+    "grunt": "^1.5.3",
     "grunt-contrib-compress": "^2.0.0",
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-connect": "^3.0.0",
